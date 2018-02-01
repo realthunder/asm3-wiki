@@ -2,15 +2,25 @@
 
 * Start FreeCAD, and create a new document
 * Switch to `Part` workbench, and create a `Cube` and a `Cylinder`
-* Switch to `Assembly3` workbench, click ![Add assembly](/Gui/Resources/icons/Assembly_New_Assembly.svg) to create a new assembly
+* Switch to `Assembly3` workbench, click 
+  ![AddAssembly](../raw/master/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true) 
+  to create a new assembly
 * Select both the `Cube` and `Cylinder`, and drag them into the new assembly
-* Select any face of the `Cylinder` or `Cube`, and click ![Move](/Gui/Resources/icons/Assembly_Move.svg) to activate part manual movement. Click any arrow to drag the `Cylinder` on top of the `Cube`
-* Select the top face of `Cut` and (while holding `CTRL` key) select the bottom face or edge of the `Cylinder`, and then click ![Add Coincidence](/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg) to create a plane coincidence constraint.
-* Finally, click ![Solve](/Gui/Resources/icons/AssemblyWorkbench.svg) to solve the constraint system.
+* Select any face of the `Cylinder` or `Cube`, and click 
+  ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
+  activate part manual movement. Click any arrow to drag the `Cylinder` on top
+  of the `Cube`
+* Select the top face of `Cut` and (while holding `CTRL` key) select the bottom
+  face or edge of the `Cylinder`,  and then click
+  ![AddCoincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)
+  to create a plane coincidence constraint.
+* Finally, click
+  ![Solve](../raw/master/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
+  to solve the constraint system.
 
-![Screencast1](/wiki/images/simple.gif)
+[[images/simple.gif]]
 
-You can click ![Auto recompute](/Gui/Resources/icons/Assembly_AutoRecompute.svg) 
+You can click ![Auto recompute](../raw/master/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true) 
 to enable auto-solving with any changes in constraint.
 
 After a new constraint is created, the selected elements will be highlighted in
@@ -20,11 +30,11 @@ changing the color of constraint object itself. Make sure you set the
 `OverrideMaterial` view property to `True`. 
 
 In case you find that the constraining element highlight obscure the assembly
-3D view, you can enable the _Auto Element Visibility_ feature by clicking 
-![Auto Element Vis](/Gui/Resources/icons/Assembly_AutoElementVis.svg). When 
-enabled, all constraining elements will be hidden by default. You can reveal
-them by selecting any constraint or constraint element object in the tree
-view.
+3D view, you can enable the _Auto Element Visibility_ feature by clicking
+![AutoElementVis](../raw/master/Gui/Resources/icons/Assembly_AutoElementVis.svg?sanitize=true).
+When enabled, all constraining elements will be hidden by default. You can
+reveal them by selecting any constraint or constraint element object in the
+tree view.
 
 Now, save this document with whatever name you like.
 
@@ -47,17 +57,17 @@ base part.
   four. Now you have four identical assemblies.
 * Create a new assembly, and then drag the link object into it.
 * Select any face of any `Cube`, click
-  ![Move](/Gui/Resources/icons/Assembly_Move.svg) and drag to spread out the
-  parts.
+  ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true)
+  and drag to spread out the parts.
 * Select any face of the left most `Cube` in 3D view, and click
-  ![Lock](/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg) to lock
-  the left most sub assembly. 
+  ![Lock](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
+  to lock the left most sub assembly. 
 * Orient the parts whatever you like. Select two face from any two assembly,
   and create a plane coincidence constraint. If you've enabled _auto
   recompute_, then the two assembly will now be snapped together
 * Do the same for the rest of the parts.
 
-![Screencast2](/wiki/images/super.gif)
+[[images/super.gif]]
 
 Now that we've made this multi-joint thingy, try to save this document, and
 FreeCAD will ask if you want to save the external document, too. If you answer
@@ -107,20 +117,21 @@ on _Sync selection_ option in tree view as mentioned before). You can then drag
 the selected item to the `ElementGroup` of an `Assembly` to create a new
 `Element`, or to a `Constraint` to add an `ElementLink`. You can modify an
 existing `Element` or `ElementLink` by simply dragging the item onto an
-existing item of `Element` or `ElementLink`.
+existing item of `Element` or `ElementLink`. Checkout [[this|Replacing-Part]]
+tutorial for demonstration.
 
 # Part Move
 
 Assembly3 has extensive support of manual movement of nested assembly. In 3D
 view, select any geometry element (Face, Edge) that belongs to some assembly,
-and click ![Move](/Gui/Resources/icons/Assembly_Move.svg) to activate part
-dragging. The dragger will be centered around the selected geometry element. In
-case of multi-hierarchy assemblies, you will be dragging the first level
-sub-assembly of the top-level assembly. If you want to drag intermediate
-sub-assembly instead, add that assembly as the second selection (`CTRL` select)
-before activating part move. 
+and click ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) 
+to activate part dragging. The dragger will be centered around the selected
+geometry element. In case of multi-hierarchy assemblies, you will be dragging
+the first level sub-assembly of the top-level assembly. If you want to drag
+intermediate sub-assembly instead, add that assembly as the second selection
+(`CTRL` select) before activating part move. 
 
-If you have enabled ![Auto recompute](/Gui/Resources/icons/Assembly_AutoRecompute.svg), 
+If you have enabled ![AutoRecompute](../raw/master/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true),
 any movement of the sub-assembly will cause the parent assembly to auto
 re-solve its constraints, as shown below. Because there are too many degree of
 freedom left, hence many possible solutions of the constraint system, the
@@ -133,7 +144,7 @@ that you can undo/redo the previous mouse drag. You can also temporary bypass
 recomputation by holding `CTRL` key while dragging.
 
 
-![Screencast3](/wiki/images/move.gif)
+[[images/move.gif]]
 
 # Import External Assembly
 
@@ -141,7 +152,8 @@ In some cases, it will be easier to distribute your multi-hierarchy assembly as
 a single self-contained document. FreeCAD core provides a convenient command to
 help with this otherwise not so trivial task. Simply right-click any item in
 the document you want to distribute, and select `Link actions -> Import all
-links`, and that's all. Click ![Solve](/Gui/Resources/icons/AssemblyWorkbench.svg) 
+links`, and that's all. Click
+![Solve](../raw/master/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
 to see if every thing is okay. You can of course selectively import any object
 you want. Simply right click that item and select `Link actions -> Import
 link`.

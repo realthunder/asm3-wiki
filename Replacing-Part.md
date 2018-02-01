@@ -1,9 +1,9 @@
 Continue from the Multi-join assembly we created in previous 
-[[tutorial|CommonOperations#Create-a-Super-Assembly-with-External-Link-Array]]. 
+[[tutorial|Common-Operations#create-a-super-assembly-with-external-link-array]]. 
 Suppose we want to change the sub-assembly with another part. The screencast
 below shows how to do it.
 
-![Screencast3](https://github.com/realthunder/files/blob/master/screencast/asm3/asm-replace-part.gif)
+[[images/replace-part.gif]]
 
 As explained in previous [[section|Concepts#Element]], all geometry element
 references used in any constraints will be referenced through some auto created
