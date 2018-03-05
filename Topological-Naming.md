@@ -16,9 +16,10 @@ the modification.
 There has been other attempts trying to solve this problem, e.g.
 [here](https://forum.freecadweb.org/viewtopic.php?f=10&t=23399), and
 [here](https://docs.google.com/document/d/1-d2JD8RH13ar7QPh_SpX2H5eiNND4DiCPBmGwA2R9Ug/edit)
-And various research papers posted in the forum. They all served as great
-inspirations leading to the solution presented here, which is offered as
-a general framework that is
+And various research papers posted in the forum, such as 
+[this](https://www.sciencedirect.com/science/article/pii/S2288430015300117).
+They all served as great inspirations leading to the solution presented here,
+which is offered as a general framework that is
 
 * __fully backward compatible__, meaning that you can save your model in new
   version of FreeCAD and still able to open it in older version of the software.
