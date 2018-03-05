@@ -10,7 +10,7 @@
   ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
   activate part manual movement. Click any arrow to drag the `Cylinder` on top
   of the `Cube`
-* Select the top face of `Cut` and (while holding `CTRL` key) select the bottom
+* Select the top face of `Cube` and (while holding `CTRL` key) select the bottom
   face or edge of the `Cylinder`,  and then click
   ![AddCoincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)
   to create a plane coincidence constraint.
