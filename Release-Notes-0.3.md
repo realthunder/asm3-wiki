@@ -17,7 +17,7 @@ __Bug Fix__
 
 __FreeCAD LinkStage3__
 
-* New [[Topological Naming]] framework
+* <a name="features"></a>New [[Topological Naming]] framework
   ([e057cc17](/realthunder/FreeCAD/commit/e057cc1728a28b60b96bd5aafca00536924eda9d),
   [ba4a6e6c](/realthunder/FreeCAD/commit/ba4a6e6c1d8af75b0aac04f03aaec1cec16663c6),
   [c38ef04d](/realthunder/FreeCAD/commit/c38ef04d7a84633450e956e672d840b77f88201b),
