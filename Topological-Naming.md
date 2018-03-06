@@ -109,6 +109,17 @@ can still open the document, and every links inside works as expected.
 a new mapped name, so that when restoring in the new FreeCAD, it stays the same.
 The old version FreeCAD will simply skip it.
 
+You may be wandering why can't we just hide the whole mapped element reference
+name behind the scene, and only assign the original element name to
+`PropertyLinkSub`, and let the core works its magic to keep it up-to-date. 
+There are cases where you'll prefer a constant reference name. For example,
+The new [sketch export](Release-Notes-0.3#user-content-export) feature allows you to
+export any _private_ geometry element of a sketch, including the external
+edges. Sketch will use the new mapped reference name for linking to external
+edges, and then use the SHA1 hash of the link reference as the element name for
+export. The stability of the mapped name ensures the stability of the export,
+as well.
+
 ## GUI Selection
 
 When you call `Gui.Selection.getSelectionEx()`, it will return the geometry
@@ -130,9 +141,9 @@ By default, calling `Gui.Selection.getSelectionEx()` will automatically walk
 down the selected object hierarchy, and resolve the final object, and its
 selected geometry element index based reference, so that any existing workbench
 sees exactly what they expect. New code can pass an additional parameter
-`resolve`, set to `1` to see the mapped reference name, or `2` to see the entire
-object hierarchy. That's how a `PropertyLinkSub` can be assigned a mapped
-geometry reference.
+`resolve`, set to `2` to see the mapped reference name, or `0` to see the
+entire object hierarchy. That's how a `PropertyLinkSub` can be assigned
+a mapped geometry reference.
 
 # Topological Name Generation
 
