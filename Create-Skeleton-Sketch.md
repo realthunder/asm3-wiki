@@ -33,7 +33,7 @@ we are going to build a skeleton sketch as follow,
 * Drag all draft wires into the assembly container.
 * For the green three-point poly-line, you can select any one of the three
   points, and click
-  ![AddLocked](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLocked.svg?sanitize=true)
+  ![AddLocked](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
   to create a `Locked` constraint to fix that point. 
 * Select the vertical green line segment, and click
   ![AddLineVertical](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLineVertical.svg?sanitize=true)
@@ -48,7 +48,7 @@ we are going to build a skeleton sketch as follow,
   the draft wire `Length` property, there is nothing else to be done. For other
   lines, set the `Length` parameter of the constraint accordingly.
 * Select pairs of points according to the picture above, and click
-  ![AddPointsCoincidence](../raw/master/Gui/Resource/icons/constraints/Assembly_ConstraintPointsCoincidence.svg?sanitize=true)
+  ![AddPointsCoincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintPointsCoincident.svg?sanitize=true)
   to create a `PointsCoincidence` constraint.
 * To trace the movement of an vertex, select it first, and then click
   ![Trace](../raw/master/Gui/Resources/icons/Assembly_Trace.svg?sanitize=true).
