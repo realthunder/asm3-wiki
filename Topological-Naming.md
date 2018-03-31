@@ -383,8 +383,9 @@ resulting shape. The details of the mapping algorithm can be found [[here|Topolo
 
 ## String Hasher
 
-As shown in the section above, `makESHAPE()` is going to generate some very long
-names. And as we add more histories to the model, the length of a new element name will
+As you will find out after reading the [[Topological Naming Algorithm]], the generated
+element names are going to be very long.
+And as we add more histories to the model, the length of a new element name will
 quickly go out of control. To deal with this problem, a new object is introduced,
 `StringHasher`. It allows you to transform any string into an integer ID.
 `SthringHasher.Threshold` controls how the strings are stored. If `Threshold` is
@@ -473,7 +474,7 @@ feature inside, and you'll need to recompute the entire document to get the
 updated element map.
 
 There is one more important details that is handled inside `ComplexGeoData`
-and `TopoShape`. Most of shape building involves multiple steps. It is not
+and `TopoShape`. Most of the shape building involves multiple steps. It is not
 possible to only hash the element names at the very last step, i.e right
 before the final shape is stored into a `PropertyPartShape`, because there
 is no easy way to preserve prefix and/or postfix, which are important for
@@ -481,13 +482,19 @@ querying related geometry elements (see [[here|Topological-Naming-Algorithm#user
 However, if we hash element names in the intermediate steps, where the
 shapes produced are not persisted, it is possible to have lost the string
 ID when restoring the document, causing unwanted element name change. To
-prevent this, the element map inside `ComplexGeoData` will keep an array
-of very historically used string ID references for each hashed names.
-And the arrays are persisted along with the element map.
+prevent this, each entry in the element map inside `ComplexGeoData` will
+keep an array of every historically used string ID references that 
+are involved in generating that map entry. And the arrays are persisted along
+with the element map. However, tests shows that the persisted form of this
+string IDs often gets quite long, often longer than the element name itself.
+Future development may explore the possibility to reduce file size by simply
+set `Hasher.SaveAll` to `True`, and discard all the intermediate string ID
+references.
 
 ## Element Map Versioning
 
-As you can see from the description so far, the element name generation is
+As you can see from the description so far, as well as the naming 
+[[algorithm|Topological-Naming-Algorithm#algorithm]], the element name generation is
 a very delicate process. It can be affected by many factors, such as whether
 the user turns on the hasher, the hasher threshold, how the feature assigns the
 primary element name, the `TopoShape` name generating algorithm, and of course,
@@ -497,7 +504,7 @@ generated element names, and can potentially break existing element references.
 
 To prepare for this possibility, we add a new API to `GeoFeature` to report its
 element map version. It returns a string that is persistent. Derived features
-can choose to override it the store its own version. In fact, it is __very important__
+can choose to override it to store its own version. In fact, it is __very important__
 for any geometry feature to change the version number if there is any change in
 its shape building logic. The default implementation will return something as
 below,

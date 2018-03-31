@@ -15,9 +15,24 @@ the following `OCCT` maker,
 
 # Algorithm
 
-The core function to generate element names in this category of makers is
-`makESHAPE()`. A simplified version of the algorithm is presented with the
-following pseudo Python code,
+The core function to generate element names is `TopoShape::makESHAPE()`. At
+a high level, the algorithm can be described as using four steps to try to name
+as name elements as possible.
+
+1. Find any unchanged and named elements that appear in both the input and out
+   shape, and just copy those names over to the new shape.
+2. Assign names for generated and modified elements by querying the `Mapper`.
+3. For all unnamed elements, assign an indexed based name using its upper named
+   element. For example, if a face is named `F1`, its unnamed edges will be named
+   as `F1;U1`, `F1;U2`, etc. In this step, an element may be assigned multiple
+   names, if it appear in more than one named upper elements. This is to improve
+   the name stability of the next step.
+4. For all remaining unnamed elements, use the combination of lower named
+   elements as its name. For example, if a face has all its edges named, then
+   the face will be named as something like `(edge1,edge2,edge3);L`.
+
+A simplified version of the algorithm is presented with the following pseudo
+Python code,
 
 ```python
 def makESHAPE(result_shape, mapper, input_shapes, opcode):
@@ -79,7 +94,7 @@ def makESHAPE(result_shape, mapper, input_shapes, opcode):
 
             # name type tells us if this name is for a modified (='M') or
             # generated (='G') shape. Although it shouldn't happend, but we are
-            # prepared to # accpet a shape that is both generated and modified (='MG')
+            # prepared to accpet a shape that is both generated and modified (='MG')
             if (name_type=='M' and index<0) or \
                (name_type=='G' and index>0):
                name_type = 'MG'
@@ -330,6 +345,13 @@ the fillet will report error as invalid edge link. It is the fillet editing
 tool that does the guessing by querying various prefixes. This guessing is not
 always reliable, and requires user attention, which is why it is not automated
 inside fillet feature.
+
+# Other Details
+
+The length of the generated names will be kept manageable by the 
+[[string hasher|Topological-Naming#string-hasher]]. And we will also be adding
+[[version string|Topological-Naming#element-map-versioning]] to account for
+any changes is the name generation process.
 
 # Overhead
 
