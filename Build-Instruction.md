@@ -136,6 +136,73 @@ configuring CMake, so that CMake can find the debug version Python library.
 Once built, you must rename `_slvs.pyd` to `_slvs_d.pyd` before copying to
 `asm/py_slvs`
 
+## Build for MacOS
+
+The pre-build binary for MacOS is located at a [different](../tree/master/py_slvs_mac)
+sub-module, because MacOS python extension has the same name as Linux one. To
+build it yourself for use in FreeCAD App bundle, first you need to setup `Homebrew`
+according to this [wiki](https://www.freecadweb.org/wiki/CompileOnMac), and
+build FreeCAD App bundle.
+
+Assuming you installed FreeCAD bundle at `~/some/place/FreeCAD.app`, then clone
+Assembly3 repository at `~/some/place/FreeCAD.app/Contents/Ext/freecad/`. And 
+very importantly, make sure you name the clone directory as __asm3__. After that
+checkout `slvs` sub-module, and all of its own sub-modules.
+
+```
+cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
+git submodule update --init slvs
+cd slvs
+git submodule update --init --recursive
+```
+
+Use the following command to configure and build
+
+```
+mkdir build
+cd build
+cmake \
+-DBUILD_PYTHON=1 \
+-DPYTHON_EXECUTABLE:FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \
+-DPYTHON_INCLUDE_DIR=/usr/local/opt/python@2/Frameworks/Python.framework/Headers/ \
+-DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib  \
+-DPython_FRAMEWORKS=/usr/local/opt/python@2/Frameworks/Python.framework/ ..
+
+make
+```
+
+After done, create a directory named `py_slvs_mac` under `asm3`, and copy out
+the results
+
+```
+cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
+mkdir py_slvs_mac
+touch py_slvs_mac/__init__.py
+cp slvs/build/src/swig/python/_slvs.so py_slvs_mac/
+cp slvs/build/src/swig/python/slvs.py py_slvs_mac/
+```
+
+Finally, you must make `_slvs.so` relocatable in order to be able to load
+it in FreeCAD bundle, with the following command
+
+```
+cd py_slvs_mac
+install_name_tool -id "_slvs.so" _slvs.so
+install_name_tool -add_rpath "@loader_path/../../../../lib/" _slvs.so
+install_name_tool -change \
+    "/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/Python" "@rpath/Python" _slvs.so
+```
+
+The last command changes the linked library path to be relative to the 
+bundle's dynamic library loader. In case you used a different `CMake`
+configuration, you can find out your linked library path using the
+following command
+
+```
+otool -L _slvs.so
+```
+
+Done, and you can fire up FreeCAD.app and try out Assembly3.
 
 # SymPy + SciPy
 
