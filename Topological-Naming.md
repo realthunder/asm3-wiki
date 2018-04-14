@@ -53,17 +53,17 @@ In the current FreeCAD core, the interface class that describes a geometry shape
 is called `ComplexGeoData`. It has been extended to include an optional
 `ElementMap`, with the following new APIs in both C++ and Python,
 
-* `setElementName(element,name, prefix=None, postfix=None, overwrite=False)`. It is used to assign a new 
-  `name` to an `element` with optional prefix and/or postfix, e.g. `setElementName('Edge1','e1')`. An element
+* `setElementName(element,name, postfix=None, overwrite=False)`. It is used to assign a new 
+  `name` to an `element` with optional postfix, e.g. `setElementName('Edge1','e1')`. An element
   can have multiple names, but a name can only be associated to one element.
   You can overwrite existing mapping by the `overwrite ` parameter. The purpose
-  of prefix and postfix is to make it easy for the caller to form meaningful
-  names, such as use the prefix to identify operation, and postfix to identify
-  modification. More importantly, as the name gets longer, `ComplexGeoData`
-  allows the caller to compress the name using string has, but it will ensure
-  that the prefix and postfix remains the same, for more advanced applications
+  of postfix is to make it easy for the caller to form meaningful
+  names, such as use the postfix to identify operation, and mark
+  modifications. More importantly, as the name gets longer, `ComplexGeoData`
+  allows the caller to compress the name using string hash, but it will ensure
+  that the postfix remains the same, for more advanced applications
   like deducing modified elements, etc. More details about string hashing will
-  be given in later section
+  be given in later section.
 
 * `getElementName(name,reverse=False)`. Returns the original element name
   by the given `name`, or, the other way around if `reverse` is true.
@@ -196,14 +196,9 @@ different Tag, it will append the Tag into the mapped element name.
 `TopoShape` now offers a helper method to map the same geometry element from
 other `TopoShape` instance into itself.
 
-`mapSubElement(type, shape, op=None, mapAll=False)`
+`mapSubElement(shape, op=None)`
 
-`type` will be either `Face`, `Edge`, or `Vertex`. `shape` is the other shape to
-map from. `op` is an optional string to insert before the mapped element name.
-`mapAll` indicates whether you want to map all other lower level elements, e.g.
-for `Edge`, the lower level element type will be `Vertex`. If `shape` has its
-own mapping, then `mapSubElement` will use the mapped name.
-
+`op` is an optional string to insert before the mapped element name.
 In Python, `TopoShape`'s sub-shape attributes will all use `mapSubElement` to
 transfer the element mapping from the owner shape to its sub-shapes. For
 example, run the following code in FreeCAD Python console,
@@ -261,7 +256,7 @@ doc.getObject('cube').Shape.ElementMap
 
 `TopoShape` offers several new `maker` method that utilize this element
 mapping. In C++, all of the new `maker` function name starts with `makE`, such
-as `makECompound`, `makEWires`, `makEFace`, etc. All new maker code is
+as `makECompound`, `makEWires`, etc. All new maker code is
 implemented in a new source file called `TopoShapeEx.cpp`. In Python, however,
 the changes are made by change the C++ code of existing method, so that
 existing Python feature can get the benefit without any python code
@@ -277,19 +272,16 @@ combining input lower level elements. They are,
   `makeWire`, and also as `Part.Wire` constructor. This function accepts 
   list or compound of unsorted edges. And will automatically connects
   the edges to form one or more wires (as compound)
-* `makEFace`, exposed to Python through `Part.makeFace`, and as the
-  `Part.Face` constructor.
 * `makECompSolid`, exposed to Python as `Part.CompSolid` constructor
 
-All of these method, except `makEFace`, do not really generate new element
-names, but only map existing element names, although, it may append the tags of
-the input shape to avoid name conflict. `makEFace` will name the new face, if
-and only if there is more than one face generated, by combining the edge names
-of the outer wire of the face.
+All of these method do not really generate new element names, but only map
+existing element names, although, it may append the tags of the input shape to
+avoid name conflict. 
 
 The following code demonstrate how `makECompound` maps the input shape elements
-into the new compound shape. The prefix `CMP` is the default op code of compound
-making operation.
+into the new compound shape. For name `Edge10;:T1:6`, the trailing `;:T` is the
+marker for tag. The following `1` is the actual tag, and `:6` is the source
+element name length. `6` means the first five characters, i.e. `Edge10`.
 
 ```python
 import Part,pprint
@@ -300,61 +292,16 @@ cube2.Tag = 2
 compound = Part.makeCompound([cube,cube2])
 
 pprint.pprint(compound.ElementMap)
-{'CMP1_Edge1': 'Edge1',
- 'CMP1_Edge10': 'Edge10',
- 'CMP1_Edge11': 'Edge11',
-
-...
-
- 'CMP2_Edge1': 'Edge13',
- 'CMP2_Edge10': 'Edge22',
- 'CMP2_Edge11': 'Edge23',
-...
-
-}
-```
-
-The following code demonstrates `makEFace` operation. We are making two faces at
-the same time in order to show you how face names are generated. You can see
-that the face names only contains the edge names of the outer wire.
-
-```python
-points = [
-App.Vector(10,-10,0),
-App.Vector(-10,-10,0),
-App.Vector(-10,10,0),
-App.Vector(10,10,0),
-App.Vector(10,-10,0) ]
-
-outer1 = Part.makePolygon(points)
-outer1.Tag=1
-inner1 = Part.makeCircle(5)
-inner1.Tag=2
-
-outer2 = outer1.copy()
-outer2.Tag=3
-outer2.Placement.translate(App.Vector(-40))
-inner2 = inner1.copy()
-inner2.Tag=4
-inner2.Placement.translate(App.Vector(-40))
-
-face = Part.makeFace([outer1,outer2,inner1,inner2])
-
-pprint.pprint(face.ElementMap)
-
-{'FAC(FAC1_Edge1,FAC1_Edge2,FAC1_Edge3,FAC1_Edge4)': 'Face2',
- 'FAC(FAC3_Edge1,FAC3_Edge2,FAC3_Edge3,FAC3_Edge4)': 'Face1',
- 'FAC1_Edge1': 'Edge6',
- 'FAC1_Edge2': 'Edge7',
- 'FAC1_Edge3': 'Edge8',
+{'Edge10;:T1:6': 'Edge10',
+ 'Edge10;:T2:6': 'Edge22',
+ 'Edge11;:T1:6': 'Edge11',
+ 'Edge11;:T2:6': 'Edge23',
 
  ...
-
- 'FAC3_Vertex4': 'Vertex4',
- 'FAC4_Edge1': 'Edge5',
- 'FAC4_Vertex1': 'Vertex5'}
-}
-
+ 
+ 'Vertex7;:T2:7': 'Vertex15',
+ 'Vertex8;:T1:7': 'Vertex8',
+ 'Vertex8;:T2:7': 'Vertex16'}
 ```
 
 The Sketcher now uses `TopoShape::makEWires` to create its public geometry
@@ -364,9 +311,9 @@ any sketch, and type the following command in the console.
 ```python
 pprint.pprint(App.ActiveDocument.Sketch.Shape.ElementMap)
 
-{'SKT_g1': 'Edge1',
- 'SKT_g1v1': 'Vertex1',
- 'SKT_g1v2': 'Vertex2',
+{'g1;SKT': 'Edge1',
+ 'g1v1;SKT': 'Vertex1',
+ 'g1v2;SKT': 'Vertex2',
 
  ...
 
@@ -383,8 +330,8 @@ resulting shape. The details of the mapping algorithm can be found [[here|Topolo
 
 ## String Hasher
 
-As you will find out after reading the [[Topological Naming Algorithm]], the generated
-element names are going to be very long.
+As you will find out after reading the [[Topological Naming Algorithm]], the
+generated element names are going to be very long.
 And as we add more histories to the model, the length of a new element name will
 quickly go out of control. To deal with this problem, a new object is introduced,
 `StringHasher`. It allows you to transform any string into an integer ID.
@@ -392,8 +339,8 @@ quickly go out of control. To deal with this problem, a new object is introduced
 positive, and the string length goes beyond this value, the original string
 content will be discarded, and only persists the crypto hash of the string,
 currently SHA1. If `Threshold` is non-positive, then it will keep the string as
-it is. The default `Threshold` is 40. The returned integer ID is guaranteed
-to be unique within its own `StringHasher` object.
+it is. The returned integer ID is guaranteed to be unique within its owner
+`StringHasher` object.
 
 Every `Document` now has a default `StringHasher` object accessible through
 `Document.Hasher`. `ComplexGeoData` also has an attribute named `Hasher` which
@@ -405,7 +352,10 @@ will encode the mapped element name if there is a `Hasher` available.
 a `TopoShape` containing a `Hasher` to a `PropertyPartShape`, the hasher will be
 persisted to the document. The string inside the `Hasher` is reference counted.
 By default, only used string will be persisted. You can change that behavior by
-setting attribute `StringHasher.SaveAll` to `True`.
+setting attribute `StringHasher.SaveAll` to `True`. `ComplexGeoData` will only
+hash the element name if there is at least a separator `;` found in the middle
+of the name. `TopoShape` will auto append this separator when mapping element
+from other shapes with a non zero tag.
 
 To see the effect of the string hasher,
 
@@ -416,23 +366,25 @@ cube.Tag = 1
 cube.Hasher = App.StringHasher()
 cube.Hasher.Threshold=10
 
-cube.setElementName('Edge1','A_VERY_LONG_ELEMENT_NAME')
+cube.setElementName('Edge1','A_LONG_ELEMENT;NAME')
 '#1'
 
-cube.setElementName('Edge2','ShortName')
+cube.setElementName('Edge2','SHORT;NAME')
+'#2'
 
 pprint.pprint(cube.ElementMap)
-{'#E1': 'Edge1', '#E2': 'Edge2'}
+{'#1': 'Edge1', '#2': 'Edge2'}
 
-pprint.pprint(cube.Hasher.Table)
-{1: '3627a73b7bd8c90ef07fefde34757e34dc14c1b9', 2: 'ShortName'}
+pprint.pprint(compound.Hasher.Table)
+{1: '724be94858dd7faa13ce515d46fc6849616b1a44', 2: 'SHORT;NAME'}
 
 compound = Part.makeCompound(cube)
 
 pprint.pprint(compound.ElementMap)
-{'CMP1_#E1': 'Edge1',
- 'CMP1_#E2': 'Edge2',
- 'CMP1_Edge10': 'Edge10',
+{'#1;:T1:2': 'Edge1',
+ '#2;:T1:2': 'Edge2',
+ 'Edge10;:T1:6': 'Edge10',
+ 'Edge11;:T1:6': 'Edge11'
 
 ...
 
@@ -450,6 +402,7 @@ counted.
 hasher = App.StringHasher()
 id = hasher.getID("abcde")
 
+# Note that the number after '#' is a hex number
 print str(id)
 '#1'
 
@@ -473,12 +426,17 @@ manually set this property to `False`, the document will touch every geometry
 feature inside, and you'll need to recompute the entire document to get the
 updated element map.
 
+The default `StringHasher.Threshold` is zero, meaning that all string will be
+stored in the table without crypto hashing. This is because the original string
+content is important to trace back modeling history. Tracing back history is
+not need to maintain a stable element reference, however, it is useful in other
+applications, such as view provider element color mapping.
+
 There is one more important details that is handled inside `ComplexGeoData`
-and `TopoShape`. Most of the shape building involves multiple steps. It is not
-possible to only hash the element names at the very last step, i.e right
-before the final shape is stored into a `PropertyPartShape`, because there
-is no easy way to preserve prefix and/or postfix, which are important for
-querying related geometry elements (see [[here|Topological-Naming-Algorithm#user-content-fillet]]).
+and `TopoShape`. Most of the shape building involves multiple steps. To make it
+maker API user to use, we do not demand only hashing in the very last modeling
+step, which means that it is possible to hash more than once from the input
+shape element name to the final result shape element mapped names.
 However, if we hash element names in the intermediate steps, where the
 shapes produced are not persisted, it is possible to have lost the string
 ID when restoring the document, causing unwanted element name change. To
