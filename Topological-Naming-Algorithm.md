@@ -466,8 +466,8 @@ refined face,
 from pprint import pprint
 pprint(App.ActiveDocument.Fillet.getElementHistory('Face2'))
 [('Fillet', '#36;:M;FLT;:T3:3', []),
- ('Fusion', '#23;:M#35;RFI;:T2:3', []),
- ('Cylinder', 'Face2', ['Face2;:M2;FUS;:T2:5'])]
+ ('Fusion', '#23;:M#35;RFI;:T2:3', ['Face2;:M2;FUS;:T2:5']),
+ ('Cylinder', 'Face2', [])]
 ```
 
 The history is returned in a list of 
