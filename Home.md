@@ -5,6 +5,7 @@ Welcome to the FreeCAD Assembly3 wiki!
 * [[Tutorials|Usage]]
 * [[Constraints and Solvers]]
 * Release Notes
+    * [0.6](wiki/Release-Notes-0.6)
     * [0.5](wiki/Release-Notes-0.5)
     * [0.4](wiki/Release-Notes-0.4)
     * [0.3](wiki/Release-Notes-0.3)
