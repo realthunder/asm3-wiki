@@ -20,7 +20,8 @@ rearranged/reused, and there is no easy way of tracking which one is which after
 the modification.
 
 There has been other attempts trying to solve this problem, e.g.
-[here](https://forum.freecadweb.org/viewtopic.php?f=10&t=23399), and
+[here](https://forum.freecadweb.org/viewtopic.php?f=10&t=23399), 
+[here](https://forum.freecadweb.org/viewtopic.php?f=8&t=21471), and
 [here](https://docs.google.com/document/d/1-d2JD8RH13ar7QPh_SpX2H5eiNND4DiCPBmGwA2R9Ug/edit)
 And various research papers posted in the forum, such as 
 [this](https://www.sciencedirect.com/science/article/pii/S2288430015300117).
@@ -43,9 +44,8 @@ reference auto update. The core does not know or care how the topological names
 are generated and mapped. It provides necessary ground works for other modules
 to generate stable topological names. At the time of this writing,
 `Sketcher.SketchObject` can now provide a complete stable topological naming,
-and `Part.TopoShape` also has some partial implementation of the topological
-name generation, which can already serve as a good demonstration of the
-effectiveness of the overall framework.
+and both `Part` and `PartDesign` have full implementation of the topological
+name generation.
 
 # The Framework
 
