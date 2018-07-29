@@ -33,7 +33,7 @@ container, the object's visual data is simply reused and inserted multiple
 times into the scene graph, meaning that the object actually exists
 simultaneously in multiple coordinate systems. This has a somewhat unexpected
 side effect. When an object is added to an assembly with some placement, the
-object is seemingly jumping into a new place. This is excepted, because the
+object is seemingly jumping into a new place. This is expected, because the
 object enters a new coordinate system, and it seems to have the same behavior
 as `App::Part`. But what actually happened is that the original object inside
 the global coordinate system is simply made invisible before adding to the
