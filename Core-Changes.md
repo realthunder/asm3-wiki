@@ -406,13 +406,20 @@ Here is a list of changed/added APIs,
   shape, or sub-shape through the Python object. `Link` type object overrides
   this function to delegate the call to the linked object.
 
-* `getSubObjects()`, return a list of subname references for all the child
-  sub-objects. The purpose of this function is mostly for exporting a group
-  type object. Each subname reference returned may contain more than one
-  hierarchy. For example, The `Assembly` container in `Assembly3` workbench
-  uses this function to skip one hierarchy that contains constraints and stuff
-  during exporting. The caller is expected to call `getSubObject()` with the
-  returned subname reference to obtain the actual child sub-objects. 
+* `getSubObjects(reason)`, return a list of subname references for all the
+  child sub-objects. The purpose of this function is mostly for exporting
+  a group type object (with `reason = GS_DEFAULT`). Each subname reference
+  returned may contain more than one hierarchy. For example, The `Assembly`
+  container in `Assembly3` workbench uses this function to skip one hierarchy
+  that contains constraints and stuff during exporting. The caller is expected
+  to call `getSubObject()` with the returned subname reference to obtain the
+  actual child sub-objects.
+
+  A newly added _Box Element Selection_ also uses `getSubObjects()` for
+  enumerating sub objects, with `reason = GS_SELECT`. `PartDesign::Body` will
+  return child features when given this reason. For `GS_DEFAULT`, i.e. shape
+  exporting, `Body` will not return its child feature so as to output its own
+  shape instead.
 
 * `canLinkProperties()`, tells `Gui::PropertyView` whether to show the
   properties of the linked object together with properties of `Link` object
