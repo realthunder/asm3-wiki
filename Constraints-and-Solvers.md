@@ -37,21 +37,36 @@ placement of child feature. See the following section for more details.
 
 Assembly3 provides several new constraints that are more useful for assembly
 purposes. Most of these constraints are in fact composite of the original
-constraints from SolveSpace, except for the `Lock` constraint. Some more common
-constraints are available as toolbar buttons for easy access, while all
-constraint types are accessible in property editor. Each `Constraint` object
-has a `Type` property, which allows the user to change the type of an existing
-constraint. Not all constraints require the same types of geometry elements,
-which means that changing the type may invalidate a constraint. The tree view
-will mark those invalid constraints with a red exclamation mark. Hover the
-mouse over those invalid items to see the explanation. Just follow the
-instruction to manually correct the element links.
+constraints from SolveSpace, except for the `Lock` constraint. All of the
+constraints are available as toolbar buttons, but only the more common used
+ones are visible by default. To reveal all the constraints, click
+![More](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintMore.svg?sanitize=true)
+button.
 
-Special mention about the `Lock` constraint, which is used to lock the
-placement of a related child feature. Like all other constraints, `Lock`
+Each `Constraint` object has a `Type` property, which allows the user to change
+the type of an existing constraint using the property editor. Not all
+constraints require the same types of geometry elements, which means that
+changing the type may invalidate a constraint. The tree view will mark those
+invalid constraints with a red exclamation mark. Hover the mouse over those
+invalid items to see the explanation. You can reorder the elements using 
+![Up](../raw/master/Gui/Resources/icons/Assembly_TreeItemUp.svg?sanitize=true) and
+![Down](../raw/master/Gui/Resources/icons/Assembly_TreeItemDown.svg?sanitize=true) 
+buttons. You change an existing constraining element by selecting a new face or
+edge in the 3D view and drag the corresponding tree item and drop it over the
+element item.
+
+Special mention about the `Lock` constraint
+![Lock](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true),
+which is used to lock the placement of a related child feature. Like all other constraints, `Lock`
 constraint, as a container, only accepts geometry element drag and drop. If you
 drop in a `Vertex` or linear `Edge`, then the owner feature is allowed to be
 rotated around the geometry element. If you drop in a non-linear `Edge` or
 `Face`, then the feature is completely fixed within the owner assembly with
 this constraint. If no `Lock` constraint is found in an `Assembly`, then the
-feature that owns the first element of the first constraint is fixed.
+feature that owns the first element of the first constraint is fixed. When
+you try to move a _Locked_ part, all the other parts will re-settle around
+it. You can prevent accidentally move a locked part by toggle the 
+![LockMover](../raw/master/Gui/Resources/Assembly_LockMover.svg?sanitize=true),
+which will prevent the mover button from activating.
+
+
