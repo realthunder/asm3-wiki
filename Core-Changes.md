@@ -166,6 +166,35 @@ external links. To link multiple external objects, it is recommended to group
 the objects in the external document first, and then use a single object with
 `PropertyXLink` to link them.
 
+## `PropertyPersistentObject`
+
+A new property is introduced to allow Python code to add any FreeCAD core
+objects that are derived from `Base::Persistence` as a property. This allows one
+to use the composite pattern, in other word, to implement an object using one
+or more existing objects. 
+
+This property accepts a string of the type name with its `setValue()`, and will
+create the object of the given type. And the object can be retrieved by its
+`getValue()`
+
+One use case is the `ChildViewProvider` property of `Gui::ViewProviderLink`,
+which are intended to hold any object derived from
+`Gui::ViewProviderDocumentObject`. `ViewProviderLink` is designed to be able to
+work with any object with `LinkBaseExtension`. It does not provide any actual
+visual representation, but instead, relies on the linked object's view provider
+to provide them. However, there may be cases where it makes sense for
+`ViewProviderLink` to provide the visual for its attached object directly. With
+`ChildViewProvider`, user code can now attach a secondary child view provider,
+which may not be reside in the core.
+
+A concrete use case is the `AsmPartGroup` container used by `Assembly3`. This
+container is of type `Part::FeaturePython`, but it normally does not hold any
+`Shape` of its own, instead, it uses `ViewProviderLinkPython` to borrow its
+contained part object's visual. The assembly can later on be _frozen_, such
+that any changes of its children parts has no effect on the assembly. In order
+to achieve this, the part group's `Shape` now holds a compound of the
+containing part shapes before _freezing_. And a child view provider of type
+`PartGui::ViewProviderPart` is created to provide the visuals.
 
 ## `Application`
 
@@ -342,6 +371,8 @@ API changes are listed below,
   `Part::Feature` derived objects. See [here](Link#user-content-python-link)
   for and example.
 
+* `Restore(), Save()`, modified to support [partial document loading](#partial-document-loading)
+
 * `restore(), importObjects()`, modified to unified logic of finishing 
   restoring objects by calling a new helper function `afterRestore()`. 
 
@@ -353,6 +384,71 @@ API changes are listed below,
   object's `onDocumentRestored()` function, it will also trigger the
   corresponding view object's `finsihRestoring()` using a new
   `signalFinishRestoreObject()`. 
+
+### Partial Document Loading
+
+A new feature is introduced to improve FreeCAD's scalability of handling 
+complex and nested hierarchical models, such as a mechanical assembly.
+A document object can now report if it can be loaded partially when restoring,
+using the new API [canLoadPartial()](#user-content-canloadpartial).
+
+When saving the document, before writing the actual objects, `Document` will
+now save a dependency list of each object, containing the names of its direct
+depending objects. `Document` will also call each object's `canLoadPartial()`
+and save the result together with dependency list. 
+
+When a document is opened by the end-user, which we'll be calling as the
+_main document_, it will always be fully loaded. But when a document is
+automatically opened due to external linking inside the main document, the
+dependency list in the external document will be consulted, and only the
+linked objects and their dependent objects will be considered for restoring.
+The candidate objects will be further pruned using their stored 
+`canLoadPartial()` return values. If an object returned 1, then all its direct
+depending object will only be created, but not restored, which means the
+further depending objects may not be created at all, because a newly created
+object normally has no dependency. If an object returned 2, then the object
+itself will be created but not restored. All other candidate objects will
+be restored as normal.
+
+The tree view will not show any _partially loaded_ objects, i.e. those created
+but not restored. The _partially loaded_ documents will hide their window to
+discourage the user to set them as active document. Any modification to the 
+_partially loaded_ document will generate a warning, and will not be saved.
+The tree view shows a grey icon for partial document. The user can double
+click the grey icon to reload the document fully, Or right click the _main
+document_ and select 'Reload document' to reload all its direct depending
+document fully.
+
+An example of implementing an object that supports partial loading is the
+`Assembly` container in `Assembly3`. Each `Assembly` always has three child
+objects, `Constraints`, `Elements` and `Parts`. An `Assembly` can be frozen,
+making it immune to any changes of its composing part objects in `Parts`. This
+is achieved by store a compound shape of all child parts before freezing in the
+`Shape` property of `Parts`. The _freezing_ also allows the assembly to be
+loaded partially, because it makes the assembly self sufficient without relying
+on any other external dependencies. The `Assembly` container itself will return
+0 in its `canLoadPartial()` function, which causes all three of its direct
+depending children to be loaded. However, `Constraints` will return 2 in its
+`canLoadPartial()`, because a frozen assembly do not need to be solved again,
+and all its associated constraint objects will not be created at all. `Parts`
+will return 1, so that `Parts` itself is fully restored, because we need the
+`Shape`. All the part objects, which are the direct depending objects, will be
+created but not restored, and therefore no further dependency will be
+introduced.
+
+The following screen cast shows the effect of partial document loading. The
+example assembly consists of four externally linked part objects. The screen
+cast shows that when you open the main document, the external depending
+documents will be opened automatically. Then we proceed to freeze the assembly
+object. A new file named _assembly_ is created, and an external link is added
+to link to the frozen assembly. As you can see, after the _assembly_ file is
+reopened, none of the external part files are opened automatically. The
+original main document is partially opened with a grey icon. None of the
+partially loaded part objects is shown in the tree. Finally, we double click
+the partially opened document to reload it fully, and every part objects
+reappeared in the linking document.
+
+[[images/partial-loading.gif]]
 
 ## `DocumentObject`
 
@@ -462,6 +558,23 @@ Here is a list of changed/added APIs,
   `onBeforeChangeLable()` function to notify the new label. For example,
   `App::Link` supports label inside subname reference, and will auto adjust all
   affected label subname reference in `onBeforeChangeLabel()` function.
+
+* `onUpdateElementReference()`, will be called when any element reference in
+  some of the object's link property is changed, due to topological changes
+  in the linked model.
+
+* <a name="canloadpartial"></a>`canLoadPartial()`, allow the object to inform
+  the document whether it can can be partially loaded when restoring as an
+  externally linked object. 
+
+  Partial loading means the object will be created but not restored when its
+  document is restored.
+
+  The return value of this function has the following meaning,
+  * 0, the object must be fully loaded, 
+  * 1, the object must be fully loaded, but all its directly depending objects
+    can be partially loaded.
+  * 2, the object itself can be partially loaded.
 
 ## `DocumentObjectExtension`
 
@@ -1058,6 +1171,43 @@ following API of `Selection` with an extra argument, `pickedList`,
 The following screen cast shows the picked list in action.
 
 [[images/pickList.gif]]
+
+### Selection Stack
+
+With deep nested hierarchical models, such as an assembly with lots of
+sub-assemblies, navigation among various objects become increasingly difficult.
+`SelectionSingleton` now offers a new facility, called _Selection Stack_, to
+help user keep track of their selections. It is exposed using the following
+APIs,
+
+* `selStackGoBack()`, exposed to Python and end-user through command `Std_SelBack`
+* `selStackGoForward()`, exposed to Python and end-user through command `Std_SelForward`
+* `selStackPush()`, exposed to Python as `Selection.pushSelSback()`
+
+It works similar to document undo/redo command. There is no automatic saving of
+every selection changes. Only commands that are meant for navigation purpose
+will call `selStackPush()` command to manually save the current selection to
+the selection stack. The core currently provides the following navigation
+command,
+
+* `Std_SelBack`, go back to previous save selection
+* `Std_SelForward`, go forward to previous backed selection
+* `Std_LinkSelectLinked`, select the linked object
+* `Std_LinkSelectLinkedFinal`, select the deepest linked object in case of multi-level linking
+* `Std_LinkSelectAllLinks`, select all link object that links to the current selection
+* `Std_SelectAllInstances`, select all appearance of the current selection in all object hierarchies
+
+These navigation command is best used together with the following new tree view
+options, activated by tree view context menu, _Tree view options_
+* Sync Selection, scroll the tree view to the selected item
+* Sync view, auto activate the document of the selected item
+
+Python user code can easily implement navigation command as follow, 
+* Call `Selection.pushSelStack()` to save the current selection for backing,
+* read the current selection, and calculate the next selection target(s)
+* Call `Selection.clearSelection()`
+* Call `Selectino.addSelection()` to select the intended navigation target(s)
+* Call `Selection.pushSelStack()` again to save the selection for potential forwarding.
 
 ### Other Changes
 

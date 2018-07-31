@@ -601,10 +601,11 @@ view provider.
 
 There is still room for improvement for render caching. Currently, `Link` will
 disable render caching when it has any element color override or element
-selection (which is essential the same as color override). This cache disable
+selection (which is essentially the same as color override). This cache disable
 only affects all instances of the linked object. It is necessary because
 element color override is handled inside the shape node, rather than the cache
 keeping `SoSeparator` nodes, which means that the recorded cache is unable to
 track color override changes. Whole object selection and color override does
 not have this negative effect, because they are handled inside
 `SoFCSelectionRoot` by its overridden render function.
+
