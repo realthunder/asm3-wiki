@@ -576,6 +576,14 @@ Here is a list of changed/added APIs,
     can be partially loaded.
   * 2, the object itself can be partially loaded.
 
+* `redirectSubname()`, allows an object to redirect selection to some other
+  object when (pre)selected in the tree view. An example will be the
+  [Relation](Navigation#relation-group) object in `Assembly3`, which redirects
+  the selection to the corresponding part object. The `Relation Group` can
+  be consider as an alternative organization of the assembly object tree.
+  The _redirection_ functionality greatly simplified the implementation by
+  reusing the part object's visual.
+
 ## `DocumentObjectExtension`
 
 The following new extension point as been added for the new APIs of
@@ -1199,8 +1207,8 @@ command,
 
 These navigation command is best used together with the following new tree view
 options, activated by tree view context menu, _Tree view options_
-* Sync Selection, scroll the tree view to the selected item
-* Sync view, auto activate the document of the selected item
+* _Sync Selection_, scroll the tree view to the selected item
+* _Sync view_, auto activate the document of the selected item
 
 Python user code can easily implement navigation command as follow, 
 * Call `Selection.pushSelStack()` to save the current selection for backing,
@@ -1208,6 +1216,8 @@ Python user code can easily implement navigation command as follow,
 * Call `Selection.clearSelection()`
 * Call `Selectino.addSelection()` to select the intended navigation target(s)
 * Call `Selection.pushSelStack()` again to save the selection for potential forwarding.
+
+See [here](Navigation) for an demonstration of the _Selection Stack_ in action.
 
 ### Other Changes
 
