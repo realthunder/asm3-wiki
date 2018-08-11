@@ -86,7 +86,7 @@ cd asm3/slvs
 git submodule update --init --recursive
 mkdir build_mingw
 cd build_mingw
-cmake -DBUILD_PYTHON=1 -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=1 -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
 make _slvs
 ```
 After finish, copy `slvs.py` and `_slvs.pyd` from
@@ -162,13 +162,14 @@ Use the following command to configure and build
 mkdir build
 cd build
 cmake \
+-DCMAKE_BUILD_TYPE=Release \
 -DBUILD_PYTHON=1 \
 -DPYTHON_EXECUTABLE:FILEPATH=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/bin/python2.7 \
 -DPYTHON_INCLUDE_DIR=/usr/local/opt/python@2/Frameworks/Python.framework/Headers/ \
 -DPYTHON_LIBRARY=/usr/local/opt/python@2/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib  \
 -DPython_FRAMEWORKS=/usr/local/opt/python@2/Frameworks/Python.framework/ ..
 
-make
+make _slvs
 ```
 
 After done, create a directory named `py_slvs_mac` under `asm3`, and copy out
