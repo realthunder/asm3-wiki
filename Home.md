@@ -3,6 +3,13 @@ Welcome to the FreeCAD Assembly3 wiki!
 * [[Build Instruction]]
 * [[Concepts]]
 * [[Navigation]]
+* Tutorials
+    * [[Common Operations]]
+    * [[Replacing Part]]
+    * [[Create Skeleton Sketch]]
+    * [[How to Handle Large Scale Assembly]]
+    * [[Modeling using Assembly]]
+    * [[Constraint with Expressions]]
 * [[Constraints and Solvers]]
     * [[Lock]]
     * [[Plane Alignment]]
@@ -18,13 +25,6 @@ Welcome to the FreeCAD Assembly3 wiki!
     * [[Points Plane Distance]]
     * [[Point Line Distance]]
     * [[Symmetric]]
-* Tutorials
-    * [[Common Operations]]
-    * [[Replacing Part]]
-    * [[Create Skeleton Sketch]]
-    * [[How to Handle Large Scale Assembly]]
-    * [[Modeling using Assembly]]
-    * [[Constraint with Expressions]]
 * Release Notes
     * [0.8](wiki/Release-Notes-0.8)
     * [0.6](wiki/Release-Notes-0.6)
