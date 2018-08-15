@@ -22,7 +22,8 @@ The assembly consists of the following parts.
 [[images/wind-turbine-socket.png]]
 [[images/wind-turbine-pin.png]]
 
-The original parts file can be downloaded [here](images/wind-turbine.zip)
+The original parts file can be downloaded 
+[here](https://github.com/realthunder/files/raw/master/misc/wind-turbine-parts.zip)
 
 Now, let's begin.
 
