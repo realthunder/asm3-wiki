@@ -24,6 +24,7 @@ Welcome to the FreeCAD Assembly3 wiki!
     * [[Create Skeleton Sketch]]
     * [[How to Handle Large Scale Assembly]]
     * [[Modeling using Assembly]]
+    * [[Constraint with Expressions]]
 * Release Notes
     * [0.8](wiki/Release-Notes-0.8)
     * [0.6](wiki/Release-Notes-0.6)
