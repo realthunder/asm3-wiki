@@ -71,7 +71,7 @@ make _slvs
 ```
 
 After compilation is done, copy `slvs.py` and `_slvs.so` from
-`asm3/slvs/build/src/swig/python/CMakeFiles` to `asm3/py_slvs`. Overwrite
+`asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite
 existing files if you've checked out the `py_slvs` sub module. If not, then be
 sure to create an empty file named `__init__.py` at `asm3/py_slvs`.
 
@@ -90,7 +90,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=1 -DCMAKE_TOOLCHAIN_FILE=../cmak
 make _slvs
 ```
 After finish, copy `slvs.py` and `_slvs.pyd` from
-`asm3/slvs/build/src/swig/python/CMakeFiles` to `asm3/py_slvs`. Overwrite
+`asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite
 existing files if you've checked out the `py_slvs` sub module. If not, then be
 sure to create an empty file named `__init__.py` at `asm3/py_slvs`.
 
