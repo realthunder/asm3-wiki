@@ -56,13 +56,15 @@ You can test the mechanism by changing the `Angle` of the big gear constraint.
 [[images/gear1.gif]]
 
 Now, we create the final assembly, add the pinion assembly and the base with
-the rack gear, and fix them together with another `PlaneCoincident`. We shall
-again lock the rotation of this constraint. We want to translate the pinions
-in its relative Y position, so enter an expression in the `OffsetY` property of
-the constraint,
+the rack gear, and fix them together with another `PlaneCoincident`. Notice
+that we are using the `Sketch` for constraining. This is important, because
+the gear is meant to be rotated, while the `Sketch` is fixed. We shall again
+lock the rotation of this constraint. We want to translate the pinions in its
+relative Y position, so enter an expression in the `OffsetY` property of the
+constraint,
 
 ```
-Constraint001.Angle/360*15*pi
+-Constraint001.Angle/360*15*pi
 ```
 
 Done!
