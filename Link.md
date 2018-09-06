@@ -72,7 +72,7 @@ Saying some object is selected may now be ambiguous. We must include the
 hierarchical information of the selected object. We shall call the hierarchy of
 a specific selection its _Selection Context_.
 
-<a name="suname"></a>To introduce the _Selection Context_ concept in a backward
+<a name="subname"></a>To introduce the _Selection Context_ concept in a backward
 compatible way, we choose to extend the meaning of an existing attribute in
 FreeCAD selection. The `SubName` is originally used to carry non-object
 sub-element reference of a selection, such as a geometry element reference like

@@ -16,7 +16,7 @@ the coordinates displayed in the status bar when you move your mouse over some
 object.
 
 There is an existing container, `App::Part`, in upstream FreeCAD, which is
-a group type object that provides local coordinate system. The difference,
+a group type object that defines a local coordinate system. The difference,
 comparing to Assembly3 container, is that one object is allowed to be added to
 one and only one `App::Part` container. The owner container can be added to
 other `App::Part` container, but must still obey the one direct parent
@@ -33,7 +33,10 @@ container, the object's visual data is simply reused and inserted multiple
 times into the scene graph, meaning that the object actually exists
 simultaneously in multiple coordinate systems. This has a somewhat unexpected
 side effect. When an object is added to an assembly with some placement, the
-object is seemingly jumping into a new place. This is expected, because the
+object is seemingly jumping into a new place (Update: there is a new feature
+to auto adjust placement when dropping object across different coordinate
+system. To activate it, right click anywhere in tree view, and select
+`Tree options -> Sync placement`). This is expected, because the
 object enters a new coordinate system, and it seems to have the same behavior
 as `App::Part`. But what actually happened is that the original object inside
 the global coordinate system is simply made invisible before adding to the

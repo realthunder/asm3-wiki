@@ -3,7 +3,7 @@ tutorial shows two approaches of doing this.
 
 [[images/assembly-binder.png]]
 
-We are going to assembly the above parts. Imaging the blueish part is a PCB,
+We are going to assemble the above parts. Imaging the blueish part is a PCB,
 the brown box is a USB socket, and the green board is a panel. In addition to
 assembling these three parts together, we also want to cut a hole out of the
 panel to expose the USB socket, at the assembled location.
