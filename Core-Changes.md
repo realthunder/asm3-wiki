@@ -671,6 +671,11 @@ There are also quite a few API changes for supporting the new _Topological Namin
 feature. Please refer to [this](Topological-Naming) and [this](Topological-Naming-Algorithm)
 document for more details.
 
+## Expression
+
+There is a major refactor of the `Expression Engine`. You can find more details
+at [[Expression and Spreadsheet]].
+
 # `Gui` Namespace
 
 ## `ViewProvider`
@@ -1459,3 +1464,9 @@ and visibility has been added, as well as support of assembly component
 instance styling override using `Link's` color and visibility override
 function. New options are exposed to `STEP` import/export preference page,
 including options to access original upstream importer. 
+
+# Spreadsheet
+
+There is a major refactor of the `Expression Engine`, along with the
+`Spreadsheet` module. You can find more details at [[Expression and Spreadsheet]].
+
