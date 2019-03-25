@@ -246,11 +246,12 @@ as follows,
   still no match is found, then the owner object's property list will be
   searched at last.
 
-* `.identifier`. A new syntax is introduced to make it easy for user to
-  directly referencing a _local property_ without ambiguity, by preceding the
-  `identifier` with a `.`, similar to Python's relative import syntax.
+* <a name="pseudo-property"></a>`.identifier`. A new syntax is introduced to
+  make it easy for user to directly referencing a _local property_ without
+  ambiguity, by preceding the `identifier` with a `.`, similar to Python's
+  relative import syntax.
 
-  As a convenience, there is a list of pseudo proeprties defined as below,
+  As a convenience, there is a list of pseudo properties defined as below,
   which can be use on any object referencing scheme, not limited to local
   property reference.
 
@@ -550,7 +551,7 @@ populate the list with the parts information from the selection.
 
 [[images/spreadsheet.gif]]
 
-To reveal the script of a cell with non-default edit mode, you can right click
+<a name="edit"></a>To reveal the script of a cell with non-default edit mode, you can right click
 it and select `Edit mode -> Normal`. And then you can edit the cell as usual.
 Alternatively, you can right click the spreadsheet object in the tree view, and
 select `Expression actions -> Copy selected`. You can then paste the scripts to
@@ -633,7 +634,7 @@ def partInfo(obj, key):
 
 ```
 
-Cell `C2` defines a function to filter for assembly object only. `D2` defines
+<a name="label2"></a>Cell `C2` defines a function to filter for assembly object only. `D2` defines
 a function to extract part information defined in the description field of
 the object (i.e. property `Label2`). In this example, an `idict` is used to 
 define the part information. `D2` just calls `eval()` to evaluate the script
