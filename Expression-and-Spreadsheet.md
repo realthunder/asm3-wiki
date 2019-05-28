@@ -67,6 +67,7 @@ No Python module is allowed except the followings,
 * `FreeCAD` (i.e. the `App` module)
 * `FreeCADGui` (i.e. the `Gui` module. However, `Gui.docommand()` is blocked)
 * `Part`
+* `CadQuery` (A bundled and modified version of [CadQuery](https://github.com/dcowden/cadquery))
 
 User can manually white list modules by adding a boolean parameter under
 `BaseApp/Preferences/Expression/PyModules` with the absolute module reference
@@ -159,13 +160,26 @@ To end the Python mode,
 ```
 
 Note that the mode switching statement is not counted, so it can be ended by
-a single `#@pyend` regardless how many `#@pybegin` ahead.
+a single `#@pyend` regardless how many `#@pybegin` ahead. When writing expression
+inside a spreadsheet, you can use the new spreadsheet property `Python Mode`
+to control the default mode.
 
 # Syntax Difference vs. Python
 
 As mentioned above, the extended expression syntax is borrowed from Python,
 Python 3 to be exact. This section highlights the difference between the two.
 
+Here is a diagram showing the relation between Python syntax, extended
+expression syntax, and the upstream Expression syntax.
+
+![expression-engine-overall-map](./images/expression-engine-overall-map.png)
+
+* `#1`: [Python-syntax-mode](#python-syntax-mode)
+* `#2`: This is the default mode ("Compatibility mode") while entering an expression, unless
+    * `Python Mode` is set to `True` for a spreadsheet
+    * `#@pybegin;` isn't prepended to an expression
+* `#3`: Currently none.
+* `#4`: [not-implemented](#not-implemented), [security-related](#security-concern)
 
 ## Not Implemented
 
@@ -187,13 +201,13 @@ parser,
   because expression supports quoting string with `<<` and `>>`, `\>` is
   also supported. There is no support for octal, hex or Unicode escaping.
 
-* Variable declaration and assignment can only be used inside a function body
+* ~~Variable declaration and assignment can only be used inside a function body
   or by a script invoked through `eval()` or `func()`. This restriction also
   applies to implicit variable assignment with `for` statement, but not
-  applicable to list/set/dict comprehensions, which can be used anywhere.
+  applicable to list/set/dict comprehensions, which can be used anywhere.~~
 
 * The _global_ variable scope is defined as the variables defined in top level
-  function or the first calling of `eval()`. And _local_ means the current
+  statement. And _local_ means the current
   executing function or `eval()`. The variable scope, or more specifically, the
   evaluation stacks are isolated from the Python interpretor running inside
   FreeCAD. The `global`, `local`, `nonlocal` and `del` statements are supported
@@ -247,7 +261,7 @@ as follows,
   searched at last.
 
 * <a name="pseudo-property"></a>`.identifier`. A new syntax is introduced to
-  make it easy for user to directly referencing a _local property_ without
+  make it easy for user to directly reference a _local property_ without
   ambiguity, by preceding the `identifier` with a `.`, similar to Python's
   relative import syntax.
 
@@ -258,7 +272,7 @@ as follows,
   * `_shape`, using `Part.getShape()` to obtain the referenced object's
     `Shape`. `Part.getShape()` supports getting shape from many objects
     without having a property of `Shape`, including `App::Link`,
-    `App::LinkGroup` and `App::Part`.
+    `App::LinkGroup`, `App::Part` and `App::Group`.
 
   * `_pla`, using `DocumentObject.getSubObject()` to obtained the accumulated
     placement of a [sub-object](#user-content-subobject) reference.
@@ -267,7 +281,7 @@ as follows,
 
   * `__pla`, similar to `_pla`, except that if the sub-object is an
     `App::Link`, then it will use `DocumentObject.getLinkedObject()` to
-    accumulate the link's placement as well.
+    accumulate the linked object's placement as well.
 
   * `__matrix`, same as `__pla`, but return as a `App.Matrix`
 
@@ -288,6 +302,8 @@ as follows,
   * `_math`, refers to Python `math` module.
 
   * `_coll`, refers to Python `collections` module.
+
+  * `_cq`, refers to the bundled `CadQuery` module.
 
 * `<<label>>.identifier`. Referencing an object using its user changeable
   label. Note that the label must be a string with FreeCAD expression quoting
