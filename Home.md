@@ -26,6 +26,7 @@ Welcome to the FreeCAD Assembly3 wiki!
     * [[Point Line Distance]]
     * [[Symmetric]]
 * Release Notes
+    * [0.10](wiki/Release-Notes-0.10)
     * [0.9](wiki/Release-Notes-0.9)
     * [0.8](wiki/Release-Notes-0.8)
     * [0.6](wiki/Release-Notes-0.6)
