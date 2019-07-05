@@ -258,7 +258,8 @@ API changes are listed below,
   that the obtained object list may include objects from other document.
 
 * `getDependencyList()`, replace the original implementation with
-  `_buildDependencyList()`
+  `_buildDependencyList()`. In addition, improve error reporting by finding
+  the objects involved in dependency loops.
 
 * `getDependentDocuments()`, get a list of documents that are dependent to this
   document. 
@@ -269,7 +270,7 @@ API changes are listed below,
   `Recompute` button on the toolbar will be activated or deactivated by
   checking with this function.
 
-* `recompute()`, there are several changes to recomputation logic,
+* <a name="recompute"></a>`recompute()`, there are several changes to recomputation logic,
 
   * `recompute()` now accepts an optional input vector of objects, in order to
     support partial recomputation. Only the given objects, and all their
@@ -610,7 +611,7 @@ is shown here in Python.
   the string given by `newLabel`. The object can customize label change by
   returning a string that is different from `newLabel`.
 
-* `getViewProviderName(obj)`, return a string of the view provider type of this
+* `getViewProviderNameOverride(obj)`, return a string of the view provider type of this
   object. This allows Python code to override the view provider of an object.
 
 * <a name="getsubobject"></a>`getSubObject(obj,subname,retType,matrix,transform,depth)`,
