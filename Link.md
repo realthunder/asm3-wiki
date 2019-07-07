@@ -341,10 +341,11 @@ the linked view provider. `LinkInfo` ensures that each object has at most three
 snapshots (one for each linking type) no matter how many times it is linked, in
 order to save memory resources and improve update efficiency.
 
-A new class `Gui::SoFCSelectionRoot`, derived from `Coin3D SoSeparator`, is added
-both as the storage, and also as the key(s) for looking up selection context.
-When an object is linked, `LinkView` will request a snapshot of the node tree
-from `LinkInfo`, and use a `SoFCSelectionRoot` to hold the snapshot tree.
+<a name="selroot"></a>A new class `Gui::SoFCSelectionRoot`, derived from
+`Coin3D SoSeparator`, is added both as the storage, and also as the key(s) for
+looking up selection context. When an object is linked, `LinkView` will request
+a snapshot of the node tree from `LinkInfo`, and use a `SoFCSelectionRoot` to
+hold the snapshot tree.
 
 <a name="rendering"></a>Various shape nodes are extended to support selection
 context, including `PartGui::SoBrepPointSet`, `PartGui::SoBrepEdgeSet`, and

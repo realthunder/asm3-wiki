@@ -377,14 +377,31 @@ API changes are listed below,
 * `restore(), importObjects()`, modified to unified logic of finishing 
   restoring objects by calling a new helper function `afterRestore()`. 
 
-* `afterRestore()`, called after objects are restored either from physical
-  document or clipboard. It first sort the object using `getDependencyList()`,
-  and then calls object's `onDocumentRestored()` function in the correct
-  order, in order to make it possible for object to dynamically generate
-  content during restoring from its dependent object. When calling each
-  object's `onDocumentRestored()` function, it will also trigger the
-  corresponding view object's `finsihRestoring()` using a new
-  `signalFinishRestoreObject()`. 
+* <a name="after-restore"></a>`afterRestore()`, called after objects are
+  restored either from physical document or clipboard (i.e. import). Comparing
+  to upstream, there are a lot more needed to be done after restoring
+  a document. In fact, in case of multiple document project, a lot of the post
+  processing can only be done after all depending documents have been restored,
+  which is why we have this dedicated afterRestore(). The flow goes like this:
+
+  * Calls [Property::afterRestore()](https://github.com/realthunder/FreeCAD/blob/4ad2c5c6e1befd5bd8f913811896a74e9d21b127/src/App/Property.h#L162)
+    (click the link for more details) for every properties in every objects.
+
+  * Check if there is any touched object, and signal reload if the
+    current document is partial loaded.
+
+  * For each object in dependency order
+
+    * Call [Property::onContainerRestored()](https://github.com/realthunder/FreeCAD/blob/4ad2c5c6e1befd5bd8f913811896a74e9d21b127/src/App/Property.h#L184).
+
+    * Call PropertyExpressionEngine::execute() with ExecuteOnRestore
+      option. This only executes the expressions for properties marked
+      as Property::EvalOnRestore.
+
+    * Call DocumentObject::onDocumentRestored()
+
+    * Check each link property to see if the link is properly restored.
+
 
 ### Partial Document Loading
 
