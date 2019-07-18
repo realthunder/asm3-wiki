@@ -46,6 +46,32 @@ Currently supported property status are,
 * `LockDynamic`: prevent dynamic property from being removed.
 * `NoModify`: prevent calling `Gui::Document::setModified()` on property change.
 
+## `DynamicProperties` and `PropertyContainer`
+
+In upstream, class `DynamicProperties` is used by `FeaturePython` and
+`ViewProviderPythonFeature` to hold dynamically created properties by Python
+code. However, it's current implementation breaks polymorphism of the
+containing object, because it directly calls the ancestor's implementation
+which will bypass the implement of any parent class (of e.g. `FeaturePython`).
+
+`DynamicProperties` has been modified and moved into `PropertyContainer` which
+means that all of its derived classes can now dynamically adding properties,
+that includes `Document`, `DocumentObject`, and `ViewProvider`. `App::Transaction`
+has also been modified such that user can now undo or redo adding and removing
+of any dynamic properties.
+
+## `AtomicPropertyChangeInterface`
+
+This is a helper class to optimize property `aboutToSetValue`/`hasSetValue()`
+calls. The original implementation uses an internal reference counter to
+make sure only call `aboutToSetValue()` only once with multiple instance
+of `AtomicPropertyChangeInterface` on the call stack, and call `hasSetValue()`
+when the last instance goes out of scope. It has been modified to allow
+user code to choose when to call `aboutToSetValue()` using a new API
+`AtomicPropertyChangeInterface::aboutToChange()`. As the name implies, this is
+intended to trigger property before change event only at the time of change.
+
+
 ## `PropertyLists`
 
 Class `PropertyLists`, and most of its derived classed has been refactored for
@@ -71,9 +97,11 @@ clash with `Property::setPyObject()`, as `PropertyListBase` is _NOT_ derived
 from `Property`.
 
 `PropertyListT` is a template class that implements the generic type logic of
-list handling, and provides the implementation of `setPyValues()`. The
-implementation is designed to be compatible with original various list
-properties. It unifies the API for all list type properties,
+list handling, and provides the implementation of `setPyValues()`. It is also
+derived from `AtomicPropertyChangeInterface` to allow more efficient handling
+of changes to multiple entries in the list. The implementation is designed to
+be compatible with original various list properties. It unifies the API for all
+list type properties,
 
 * `get/setSize()`
 
@@ -87,10 +115,10 @@ properties. It unifies the API for all list type properties,
 
 * `operator[](int)`, indexer operator to return one value
 
-* `_set1Value()`, a helper function for implementing `set1Value()`. It is
-  not public because the original list properties have non-uniform behaviors
-  for this function. Some will touch the container, while others will not. It
-  is made protected to force derived class to provider its own `set1Value()`.
+* `set1Value()`, change value of one entry. It creates `AtomicPropertyChange`
+  internally to signal property change event. User code can create their
+  own instance of `AtomicPropertyChange` when changing values of multiple
+  entries, so that the change event can be signaled only once.
 
 * `setPyObject()`, for property assignment from Python object. It first tries
   to assign the Python object as a single item. If failed, then call
@@ -122,49 +150,37 @@ solved this problem by isolating the list handling logic to a non property
 class.
 
 A new class `PropertyLinkBase`, derived from `Proeprty`, is used as the common
-parent class of all link type properties. It defines the following API
-interface,
-
-* `updateElementReference()`, called to update geometry element reference due
-  to model changes. See [here](Topological-Naming#property-link) for more
-  information
-
-* `referenceChanged()`, check if element reference has been changed after
-  document restore. If so, the core will mark the object for recompute to
-  regenerate the element mapping.
-
-* `getLinks()`, return the linked object(s) of this property, and optionally
-  any [subname](Link#user-content-subname) references, including the geometry
-  element references.
-
-* `breakLink()`, reset the link property .
+parent class of all link type properties. It defines a rich set of abstract
+interface APIs and helper functions to perform various complex link
+manipulations when exporting(copy), importing(paste), object removing, relative
+link adjustment during drag and drop, object replacing, label changing,
+topological name changing, and so on. Please consult the class 
+[document](https://github.com/realthunder/FreeCAD/blob/7edfa33e38f90846c639430e1416403af3efbcda/src/App/PropertyLinks.h#L102)
+for more details on the interface and helpers.
 
 A new link scope, `Hidden`, has been added to allow some form of cyclic
-dependency. The `getLinks()` API above will not return linked object if the
-property has `Hidden` link scope. And various link property with this scope
-will not call `DocumentObject::_addBackLink()`. Therefore, the dependency
-information of `Hidden` link scope will be hidden from the dependency checking
-logic in the core. However, the link property with `Hidden` scope still enjoys
-benefits like auto element reference update, and auto link breaking from the
-core. An example use case is the `DocumentObject::ColoredElements` property
-which holds the element reference for coloring. This `PropertyLinkSubHidden`
-property links to its own container.
-
-A lot of logic has been added in various link properties to correctly handle
-copying/importing/exporting objects from/to multiple documents. Basically, to
-avoid name clashing of objects from different documents, the object name will
-be changed to `<ObjectName>@<DocumentName>` when exporting, and then strip off
-the postfix when importing. Any new style geometry element reference will also
-be stripped during exporting, and be marked for regeneration when importing.
+dependency. The `PropertyLinkBase::getLinks()` API above will not return linked
+object if the property has `Hidden` link scope. And various link property with
+this scope will not call `DocumentObject::_addBackLink()`. Therefore, the
+dependency information of `Hidden` link scope will be hidden from the
+dependency checking logic in the core. However, the link property with `Hidden`
+scope still enjoys benefits such as auto element reference update, auto link
+breaking and many more through `PropertyLinkBase` interface. An example use
+case is the `DocumentObject::ColoredElements` property which holds the element
+reference for coloring. This `PropertyLinkSubHidden` property links to its own
+container.
 
 <a name="xlink"></a>A new link type property, `PropertyXLink`, is added
 to support linking of object from external document. It is derived from
 `PropertyLink` which makes it a drop-in replacement in case external linking is
-required. No equivalent external link support for other type of link property,
-such as `PropertyLinkList`, because of the added complexity of managing
-external links. To link multiple external objects, it is recommended to group
-the objects in the external document first, and then use a single object with
-`PropertyXLink` to link them.
+required. There corresponding external linking capable properties
+for other existing properties, such as `PropertyXLinkSub` and `PropertyXLinkSubList`.
+
+A new class `PropertyXLinkContainer` is added to support more complex
+external link usage, such as `PropertyExpressionEngine` and `Spreadsheet::PropertySheet`.
+As as result, both of these two properties can be treated just like another link
+type properties, with unified handling of link manipulation through the standard
+interfaced defined in `ProeprtyLinkBase`.
 
 ## `PropertyPersistentObject`
 
@@ -208,8 +224,8 @@ A few of new APIs are added to `App::Application` class.
   part of the implementation of the new core functionality called 
   _Auto Transaction_. The other part exists in `App::Document`. Programmer can now
   call `Application::setActiveTransaction()` to set a potential transaction
-  with a given name. The transaction is only created when there is any actual
-  changes. Moreover, each transaction now has an associated integer ID.
+  with a given name. The transaction is only created when there is an actual
+  change. Moreover, each transaction now has an associated integer ID.
   `setActiveTransaction()` will create a new ID each time it is called. Each
   changed document will check for active transaction by calling
   `getActiveTransaction()` and create the actual transaction with the current
@@ -222,9 +238,40 @@ A few of new APIs are added to `App::Application` class.
   exiting code, `App::Document::open/commit/abortTransaction()` has been
   modified to call instead `Application::set/closeActiveTransaction()`. The
   actual transaction operation is done by
-  `App::Document::_open/_commit/_abortTranaction()`. This behavior is by
-  default on, and can be turned off by a boolean parameter
-  `BaseApp/Preference/Document/AutoTransaction`
+  `App::Document::_open/_commit/_abortTranaction()`.
+
+  <a name="auto-transaction"></a>A helper class `App::AutoTransaction` is
+  created to simplify auto transaction. It sets up an active transaction when
+  the first instance is created on the call stack, and will cause `Application`
+  to ignore any further call of `setActiveTransaction()`, and will make sure to
+  call `commitTransaction()` when the last instance go out of scope.
+  `Gui::Command` demonstrates a more advanced usage of this class.
+  `Command::invoke()` now sets up an instance of `AutoTransaction` using the
+  command display name as the transaction name. However, the name is marked as
+  temporary, meaning that the user code in the actual command can override the
+  transaction name either by manually calling `Application::setTransaction()`
+  or creating its own `AutoTransaction` instance. The transaction can be
+  aborted at any time regardless of how many instance of `AutoTransaction` in
+  the call stack. But it will only calls `commitTransaction()` when the last
+  instance of `AutoTransaction` goes out of scope. This makes sure that the
+  transaction holds the complete change of a command regardless if the command
+  invokes any other command recursively, or commits the transaction
+  prematurely. For example, almost all sketcher command commits the transaction
+  first, and then perform a recompute. However, the sketcher solver may
+  sometimes get a drastically wrong solution due to missing external
+  geometries, an undo cannot solved problem because the original `Shape`
+  property is not captured in the transaction. The usage of `AutoTransaction`
+  solves this problem without modifying `Sketcher`.
+
+* `signalUndo/Redo`, new signals triggered after undo and redo. The difference
+  between these and existing `signalUndo/RedoDocument` is that these two are
+  signaled once even though the transaction may involve multiple documents.
+  These signaled as exposed to `App::DocumentObserverPython`.
+
+* `signal(Before)CloseTransaction`, new signals triggered before and after
+  a new transaction is either aborted or committed. Same as above, these
+  signals are triggered once per transaction regardless how many documents
+  are involved.
 
 * `checkLinkDepth/getLinksTo/hasLinksTo()`, a few helper functions to obtain
   `Link` object across all opened documents.
@@ -287,23 +334,9 @@ API changes are listed below,
     Note that without this `force` recomputation functionality, many object
     will report error when finish editing if its owner document is marked as
     `SkipRecompute`, because some editing logic expects the recomputation to
-    work, and will check the recomputation result for verification.
+    work, and will check the recomputation result for verification. This option
+    is exposed through tree view context menu action `Allow partial recompute`
     
-    The force recompute is not initated from `App` namespace directly, but from
-    `Gui` namespace through a new `signalSkipRecompute`. `Gui::Document` will
-    catch this signal in `Gui::Document::slotSkipRecompute()`, and check if the
-    recomputation request meets the following criteria,
-
-    * The given list of recomputing objects must not be greater than one; and
-    * The document is the active document; and
-    * If we are the editing document, then force recompute the editing object; or
-    * If no object is given, then force recompute the active object of this
-      document.
-
-    The above slightly convoluted logic is designed such that existing object
-    editing code can now work when `SkipRecompute` is active, without any
-    modification.
-
   * Add support for some form of dependency inversion using a two-pass
     iteration. An example of dependency inversion is `Sketcher::SketchExport`
     object, which is a child object of some `Sketcher::SketchObject`. However
@@ -353,6 +386,10 @@ API changes are listed below,
   external linked objects, and offer user a choice of whether to copy those
   external objects or not. The object name mapping logic has been moved from
   helper class `MergeDocuments` to various link properties.
+
+* `moveObject()` is reimplemented using export (copy) and import (paste). This
+  allows the operation to be undo and redo. It now also support objects that
+  may delete its children when being removed.
 
 * `importLinks()`, with a given list of objects, this new function will copy
   all external referenced object into this document, and update all external
@@ -520,6 +557,9 @@ Here is a list of changed/added APIs,
   shape, or sub-shape through the Python object. `Link` type object overrides
   this function to delegate the call to the linked object.
 
+* `getSubObjectList()`, a helper function to return a list of sub-objects
+  referenced by the given subname.
+
 * `getSubObjects(reason)`, return a list of subname references for all the
   child sub-objects. The purpose of this function is mostly for exporting
   a group type object (with `reason = GS_DEFAULT`). Each subname reference
@@ -560,9 +600,7 @@ Here is a list of changed/added APIs,
   dependent objects together with this object if set to true.
 
 * `getInListEx()`, obtain the (optionally recursive) `InList` of this object.
-  This function exists before FreeCAD completely switched to the new DAG
-  handling code. It uses `OutList` of other objects to calculate the recursive
-  `InList`. The algorithm takes external links into account.
+  It offers a more efficient algorithm than `getInListRecursive()` in upstream.
 
 * `getOutList()`, is slightly modified to keep an internal cache, so that
   it does not have to re-scan all properties every time to construct the
@@ -683,16 +721,39 @@ is shown here in Python.
 * `canLinkProperties(obj)`, return `True` to allow `PropertyView` to display
   linked object properties together with the object's own properties.
 
-## Topologically Naming
+Besides API changes, `FeaturePython`, along with `ViewProviderPythonFeature`,
+`SelectionObserverPython`, and `DocumentObserverPython`, includes an optimization
+of early binding of Python functions. Instead of calling `getAttr()` (which
+is a really expensive call comparing to pure C++ code) inside C++ API and
+checking if a Python handler exists, it is checked at the time `Proxy` property
+is set (or modified), and the obtained Python callable is cached for future
+calling.
 
-There are also quite a few API changes for supporting the new _Topological Naming_
-feature. Please refer to [this](Topological-Naming) and [this](Topological-Naming-Algorithm)
-document for more details.
+## Expression and Spreadsheet
 
-## Expression
+I had done a major refactor of the [[Expression and SpreadSheet]].
+However, because of the potential security issue implied, I don't consider it
+matured enough for upstream right now. There are some minor changes include,
+though.
 
-There is a major refactor of the `Expression Engine`. You can find more details
-at [[Expression and Spreadsheet]].
+* `ObjectIdentifier` is indeed refactored quite a bit, but the public interface
+  remains unchanged. It now supports referencing linked property, and can deal
+  better with potential ambiguity in object name vs. Property name.
+
+* A new expression syntax is introduced to unambiguously reference a property
+  of the owner object, by omitting the object reference and starting with a
+  leading `.`, kind of similar to Python relative import syntax.
+
+* Add new expression class `PyObjectExpression` so that an expression can now
+  return any Python object, which also means that an expression can now be
+  bound to most types of properties.
+
+* Improved external reference handling in expression, which behave the same
+  as if using a `PropertyXLink`.
+
+* Improved spreadsheet recomputation logic.
+
+* Improved spreadsheet cell copy and paste functions.
 
 # `Gui` Namespace
 
@@ -738,6 +799,12 @@ at [[Expression and Spreadsheet]].
   `Link` object, where it links directly to the top parent, and indirectly
   to the dropping object through a subname reference. In other words, the
   linking to the dropping object is relative to the given top parent.
+
+* `replaceObject()`, the signature of this API is changed from upstream.
+  The default implementation go through all link type properties in the
+  parent object, and calls `PropertyLinkBase::CopyOnLinkReplace()` to do
+  the actual job. The default implementation is powerful enough that all
+  specializations of this API from upstream have been removed().
 
 * `canRemoveChildrenFromRoot()`, this function tells tree view to not remove
   children claimed by this object from the root. This API is originally
@@ -795,7 +862,8 @@ at [[Expression and Spreadsheet]].
   in `getChildRoot()`.
 
 * `getBoundingBox()`, new function to obtain object bounding box using
-  `Coin3D SoGetBoundingBoxAction`, regardless of object's visibility
+  `Coin3D SoGetBoundingBoxAction`, regardless of object's visibility. This
+  function is used in the implementation of `Box element selection` command.
 
 * `forceUpdate(), isUpdateForced()`, new API added because some object (e.g.
   `Part::Feature`) has an optimization to disable visual update when the
@@ -1325,8 +1393,8 @@ Tree item status update is no longer triggered by a periodic timer for the
 sake of both performance and easy debugging. It is now triggered by various 
 signals and events, similar to `MainWindow::updateActions()`. Search the code
 for calling of `updateStatus()` to find out the actual trigger. A single-shot
-timer is used to limited the frequency of update.
-
+timer is used to limited the frequency of update. The same technique is applied
+to selection changes to improve performance of large selections.
 
 Three options are exposed through context menu _Tree view options_,
 
@@ -1357,7 +1425,19 @@ document boundary.
 ## `PropertyView`
 
 Add support for `Link` object, which display the properties of the linked object
-together with the ones from link itself.
+together with the ones from link itself. The linked properties are displayed
+with green color for differentiation.
+
+Add context menu to expose more advanced functions, such as,
+
+* Revealing all properties, including hidden ones,
+
+* Binding expression on any property,
+
+* Add/remove dynamic properties of all types, removable properties will be
+  shown with yellow background,
+
+* Change individual property status, such as hidden, read-only, transient, etc.
 
 Added timer to limit the frequency of handling selection change, which fixes
 the severe slow down on large selection.
@@ -1373,13 +1453,15 @@ documents for linking to external objects.
 
 Change list view to tree view in order to support linking into a sub-object.
 
+Add an additional list view to let user filter objects by their type.
+
 ## `View3DInventorViewer`
 
 The parent class is changed from `Gui::SelectionSingleton::ObserverType` to
 `Gui::SelectionObserver`, so that `SelectionView` can obtain the full hierarchy
 information of the selection.
 
-Added a _On-Top_ `Coin3D` group node in the scene graph to support  the new
+Added an _On-Top_ `Coin3D` group node in the scene graph to support  the new
 `ViewProvider::OnTopWhenSelected` property, and object highlight (which is also
 made on-top) on mouse over tree view item. The logic is implemented in function
 `checkGroupOnTop()`, and called in response to various selection change event.
@@ -1435,13 +1517,6 @@ Three shape classes, `SoBrepPointSet`, `SoBrepEdgeSet`, and `SoBrepFaceSet`
 (also `SoFCSelection`, for selection rendering of non-`Part` derived object)
 are modified to support context-aware selection [rendering](Link#user-content-rendering).
 
-## `TaskElementColor`
-
-A new task class to allow user specifying element colors. It uses the new API
-`ViewProvider::get/setElementColors()`. It is currently used by
-`ViewProviderLink` to override element color, and also
-`PartGui::ViewProviderPartExt`, which replaces the original `TaskFaceColors`.
-
 # `Part`
 
 <a name="getshape"></a>The `Part` module does the actual geometry modeling.
@@ -1457,10 +1532,22 @@ shape caches to reduce number of rebuilds.
 `getTopoShape()` is exposed to Python as `Part.getShape()`. Please checkout
 its doc string for more details.
 
+Various `Part` features and commands has been modified to make it work with
+`Link`. It's basically just removing type checking of input objects, and
+use `Part.getShape()` to obtain the shape of child objects.
+
+`PropertyContainerPy` also contains a modification to return `Shape` attribute
+of any object that does not have a `Shape` property using `Part.getShape()`.
+This modification allows most `Part` Python feature to work with `Link`
+without code modification. 
+
+`ViewProviderExt` has been modified to support any type of object by using
+`getTopoShape()` to obtain the shape from the attached object.
+
 # `PartDesign` and `Sketcher`
 
-`PartDesign` and `Sketcher` modules are modified to support the new 
-[[Topological Naming]] functionality. 
+Mostly contains modification to various commands to support 
+[in-place editing](#user-content-in_place_edit).
 
 # `Draft`
 
@@ -1483,8 +1570,9 @@ instance styling override using `Link's` color and visibility override
 function. New options are exposed to `STEP` import/export preference page,
 including options to access original upstream importer. 
 
-# Spreadsheet
+# `TechDraw`
 
-There is a major refactor of the `Expression Engine`, along with the
-`Spreadsheet` module. You can find more details at [[Expression and Spreadsheet]].
+Some minor changes are included to make it support `Link` and `LinkGroup`.
+
+
 
