@@ -2,6 +2,10 @@ This article explains the motivation behind the creation of the `Link` object,
 along with the design and implementation. All necessary FreeCAD core changes
 are described [here](Core-Changes)
 
+For a end-user oriented introduction of Link, please check out the video below
+
+[![Video](https://img.youtube.com/vi/yTDkJ7JZAWs/hqdefault.jpg)](https://youtu.be/yTDkJ7JZAWs)
+
 # Motivation
 
 `Link` is primarily designed for working with assembly structure. There are two
