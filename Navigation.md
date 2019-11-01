@@ -25,7 +25,7 @@ array, then its corresponding relation will contain child relations each
 corresponding to an array element.
 
 To reveal the relation group, select any part object and click
-![Relation](../raw/master/Gui/Resources/icons/Assembly_GotoRelation.svg?sanitize=true).
+![Relation](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_GotoRelation.svg?sanitize=true).
 It is not necessary to select the root part object. You can select any child
 geometry in the 3D view, and click that button to go to the top level
 assembly's relation object corresponding to the second level part object.
@@ -44,7 +44,7 @@ they are not needed, and bring them back at any time using the above methods.
 When working with multi-hierarchy assemblies, you may want to toggle the
 visibility of some part object, but find it tedious to have to scroll the tree
 up and down to locate the root object of the part. This task can be simplified
-by clicking ![Vis](../raw/master/Gui/Resources/icons/Assembly_TogglePartVisibility.svg?sanitize=true).
+by clicking ![Vis](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_TogglePartVisibility.svg?sanitize=true).
 Select any geometry in the 3D view that belongs to the part object you want to
 hide, then click this button. It will find the root part object, collapse the
 tree item, and then hide the object.

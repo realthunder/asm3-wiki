@@ -7,7 +7,7 @@ __New Feature__
 
 * New quick mover tool. Select any object inside an Assembly container, either
   from 3D viewer or the tree view, and click 
-  ![QuickMove](../raw/master/Gui/Resources/icons/Assembly_QuickMove.svg?sanitize=true),
+  ![QuickMove](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_QuickMove.svg?sanitize=true),
   the selected object will follow the mouse. Like the other mover tools, quick
   mover also support moving object within sub-assembly container. Simply add
   the sub-assembly as the second selection using CTRL select. As shown in the
@@ -29,7 +29,7 @@ __New Feature__
 
 * Support adding Origin structure into assembly. To add the origin, select the
   the assembly, or any object inside assembly, and click 
-  ![AddOrigin](../raw/master/Gui/Resources/icons/Assembly_Add_Origin.svg?sanitize=true).
+  ![AddOrigin](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Add_Origin.svg?sanitize=true).
   To add origin to sub-assembly, you can add that sub-assembly as the second selection
   before clicking the button. Each assembly container can have only one origin. If there
   is already an existing origin, clicking the button will resize the origin to include 
@@ -39,7 +39,7 @@ __New Feature__
 [[images/origin.gif]]
 
 
-* Add a checkable button ![LockMover](../raw/master/Gui/Resources/icons/Assembly_LockMover.svg?sanitize=true)
+* Add a checkable button ![LockMover](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_LockMover.svg?sanitize=true)
   to lock mover for fixed object. Once activated, the mover buttons will not activate
   when you select explicitly locked objects.
 

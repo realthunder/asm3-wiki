@@ -13,21 +13,21 @@ provides several new constraints that are more useful for assembly purposes.
 Most of these constraints are in fact composite of the original constraints
 from SolveSpace. All of the constraints are available as toolbar buttons, but
 only the more common ones are visible by default. To reveal all the constraints, click 
-![More](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintMore.svg?sanitize=true).
+![More](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintMore.svg?sanitize=true).
 See the [section](#list-of-constraints) below for links to details of each
 individual constraint.
 
 # Creating Constraint
 
 Creating constraint is easy. Simply create an assembly by clicking 
-![AddAssembly](../raw/master/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true),
+![AddAssembly](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true),
 drag in the parts, select some geometry elements of the parts in 3D view,
 and click one of the constraint buttons to create the constraint. The constraining
 elements will appear as child objects under the constraint object. By default,
 auto element visibility function is active, which will hide the constraining
 element, and auto reveal itself when being selected, either directly, or when
 its parent constraint is selected. You can deactivate this function by clicking
-![AutoVis](../raw/master/Gui/Resources/icons/Assembly_AutoElementVis.svg?sanitize=true),
+![AutoVis](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AutoElementVis.svg?sanitize=true),
 and control the element visibility manually as shown in the following screen cast.
 
 [[images/create-constraint.gif]]
@@ -35,17 +35,17 @@ and control the element visibility manually as shown in the following screen cas
 When you create an assembly, it is advisable to first choose a _base part_,
 which is supposed to have a fixed placement relative to its containing
 assembly. You do this by creating a [[Lock]] constraint 
-![Lock](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true),
+![Lock](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true),
 as shown in the above screen cast. You can still move the _locked_ part, either using various
-[[Mover]] tools (![Mover](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true),
-![AxialMover](../raw/master/Gui/Resources/icons/Assembly_AxialMove.svg?sanitize=true),
-![QuickMover](../raw/master/Gui/Resources/icons/Assembly_QuickMove.svg?sanitize=true)),
+[[Mover]] tools (![Mover](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true),
+![AxialMover](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AxialMove.svg?sanitize=true),
+![QuickMover](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_QuickMove.svg?sanitize=true)),
 or directly modify the part's `Placement` property. The `Lock` constraint only
 prevent the assembly solver from changing the part's location. If you moved
 a locked part, every other part will gather around the new location of the
 locked part, after solver recompute. If you don't want to accidentally activate
 the mover for locked parts, click 
-![LockMover](../raw/master/Gui/Resources/icons/Assembly_LockMover.svg?sanitize=true).
+![LockMover](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_LockMover.svg?sanitize=true).
 
 Each `Constraint` object has a `Type` property, which allows the user to change
 the type of an existing constraint using the property editor. Not all
@@ -53,8 +53,8 @@ constraints require the same types of geometry elements, which means that
 changing the type may invalidate a constraint. The tree view will mark those
 invalid constraints with a red exclamation mark. Hover the mouse over those
 invalid items to see the explanation. You can reorder the elements using 
-![Up](../raw/master/Gui/Resources/icons/Assembly_TreeItemUp.svg?sanitize=true) and
-![Down](../raw/master/Gui/Resources/icons/Assembly_TreeItemDown.svg?sanitize=true) 
+![Up](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_TreeItemUp.svg?sanitize=true) and
+![Down](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_TreeItemDown.svg?sanitize=true) 
 buttons. You change an existing constraining element by selecting a new face or
 edge in the 3D view and drag the corresponding tree item and drop it over the
 element item.
@@ -143,7 +143,7 @@ a constraint. However, in `Assembly3`, there are many constraints that can
 accept more than two elements.
 
 On the constraint toolbar, when you see an icon with a red dashed border like 
-![Angle](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintAngle.svg?sanitize=true),
+![Angle](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintAngle.svg?sanitize=true),
 it means the constraint accepts a third optional element as a projection plane
 to project the first two elements into 2D space. Although 2D constraints are
 more useful when creating [skeleton-sketch](Create-Skeleton-Sketch), you may
@@ -152,13 +152,13 @@ a way to reduce the number of [DOF](https://en.wikipedia.org/wiki/Degrees_of_fre
 constrained.
 
 For icons with a red border like
-![PointsVertical](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintPointsVertical.svg?sanitize=true),
+![PointsVertical](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintPointsVertical.svg?sanitize=true),
 it means this is a 2D only constraint, and the third projection plane element
 is mandatory.
 
 
 For icon with a green border like 
-![AxialAlingment](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintAxial.svg?sanitize=true),
+![AxialAlingment](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintAxial.svg?sanitize=true),
 it means the constraint accepts multiple elements of the same type (with a few
 exceptions). The solver will expand the constraint as follow,
 
@@ -185,7 +185,7 @@ Constraint3
 ```
 
 For icons with a blue border like
-![PlaneCoincident](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true),
+![PlaneCoincident](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true),
 it supports the same multiple elements like those with green boarder.
 In addition, the constraint has a `Cascade` property, and when set
 to `True`, it will expand the constraints as follow,
@@ -227,7 +227,7 @@ the part of the first element to be constrained against the rest of the
 elements. At the time of this writing, only `PlaneConicdent` and
 `AxialAlignment` support this. You can activate this functionality by selecting
 a supporting constraint object in the tree view and then click 
-![Multiply](../raw/master/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
+![Multiply](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
 There is one additional requirement. In order to activate that button. The
 owner part of the first constraining element must be the first instance of
 a `Link Array`. 
@@ -259,7 +259,7 @@ One disadvantage of multiplying a constraint this way is that you are forced to
 use the same set of parameters for all part instances. If you want to have
 different parameters, say, a different offset for each screw instance, you can
 select the multiplied constraint, and click again
-![Multiply](../raw/master/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
+![Multiply](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
 This time, the constraint will be expanded into multiple independent constraint
 objects equivalent to the multiplied constraint for easy customization.
 

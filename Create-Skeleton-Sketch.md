@@ -10,7 +10,7 @@ we are going to build a skeleton sketch as follow,
 * Switch to Assembly3 workbench
 * Create an empty assembly container
 * Select the newly create assembly object, and click
-  ![AddWorkplane](../raw/master/Gui/Resources/icons/Assembly_Add_Workplane.svg?sanitize=true)
+  ![AddWorkplane](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Add_Workplane.svg?sanitize=true)
   to add a work plane. Note that you can use any other object with planar edge
   or face to define the sketch plane. The Assembly3 work plane is just
   a convenience.
@@ -21,7 +21,7 @@ we are going to build a skeleton sketch as follow,
   be. It is suggested to draw the initial sketch close to the final structure
   to avoid confusing the solver.
 * Select the new work plane, and click
-  ![AddSketchPlane](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintSketchPlane.svg?sanitize=true)
+  ![AddSketchPlane](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintSketchPlane.svg?sanitize=true)
   to add a `sketchPlane` constraint
 * Now, switch to Draft workbench
 * Add a few wires according to the above picture. You can add one wire for each
@@ -33,32 +33,32 @@ we are going to build a skeleton sketch as follow,
 * Drag all draft wires into the assembly container.
 * For the green three-point poly-line, you can select any one of the three
   points, and click
-  ![AddLocked](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
+  ![AddLocked](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
   to create a `Locked` constraint to fix that point. 
 * Select the vertical green line segment, and click
-  ![AddLineVertical](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLineVertical.svg?sanitize=true)
+  ![AddLineVertical](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineVertical.svg?sanitize=true)
   to create a `LineVertical` constraint. 
 * Select the horizontal green line segment, and click
-  ![AddLineHorizontal](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLineHorizontal.svg?sanitize=true)
+  ![AddLineHorizontal](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineHorizontal.svg?sanitize=true)
   to create a `LineHorizontal` constraint.
 * For each line segment, select and click 
-  ![AddLineLength](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLineLength.svg?sanitize=true)
+  ![AddLineLength](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLineLength.svg?sanitize=true)
   to create a `LineLength` constraint to fix the length. The initial length
   parameter is calculated from the selected line. So if you have already set
   the draft wire `Length` property, there is nothing else to be done. For other
   lines, set the `Length` parameter of the constraint accordingly.
 * Select pairs of points according to the picture above, and click
-  ![AddPointsCoincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintPointsCoincident.svg?sanitize=true)
+  ![AddPointsCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintPointCoincident.svg?sanitize=true)
   to create a `PointsCoincidence` constraint.
 * To trace the movement of an vertex, select it first, and then click
-  ![Trace](../raw/master/Gui/Resources/icons/Assembly_Trace.svg?sanitize=true).
+  ![Trace](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Trace.svg?sanitize=true).
   If you have enabled tracing before, you'll need to disable it first before
   selecting a new vertex and enable it again. If you select an edge or face,
   then you will be tracing the center point of the shape. If you don't select
   any shape before enable tracing, you will be tracing the moving shape.
 * Select any vertex/edge/face you want to move, and click either
-  ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) or
-  ![AxialMove](../raw/master/Gui/Resources/icons/Assembly_AxialMove.svg?sanitize=true)
+  ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) or
+  ![AxialMove](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AxialMove.svg?sanitize=true)
   and then drag the arrow to move.
 
 [[images/linkage.gif]]

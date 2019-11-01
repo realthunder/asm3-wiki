@@ -23,7 +23,7 @@ The assembly consists of the following parts.
 [[images/wind-turbine-pin.png]]
 
 The original parts file can be downloaded 
-[here](https://github.com/realthunder/files/raw/master/misc/wind-turbine-parts.zip)
+[here](https://github.com/realthunder/files/raw/master/freecad/asm3/misc/wind-turbine-parts.zip)
 
 Now, let's begin.
 
@@ -67,7 +67,7 @@ property of the link to make it an array. Before creating any constraints,
 remember to choose a fixed base part first, by creating a `Lock` constraint
 using one of its element. This simple assembly can be formed by two
 `PlaneCoincient` constraints,
-![PlaneCoincident](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true).
+![PlaneCoincident](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true).
 
 [[images/wind-turbine2.gif]]
 
@@ -84,7 +84,7 @@ cast below demonstrate the use of [Constraint Multiplication](Constraints-and-So
 feature. In order to use it, we must use a link array. Simply drag and drop the
 axis part into the main assembly once, and then change the `ElementCount` to one,
 which is one of the requirement of activating `Constraint Multiplication` button
-![Multiply](../raw/master/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
+![Multiply](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_ConstraintMultiply.svg?sanitize=true).
 
 [[images/wind-turbine3.gif]]
 
@@ -138,7 +138,7 @@ connect,
 
 There are totally three DOF left, not enough for another `PlaneCoincedent`. You
 can try with the `AxialAlignment` constraint 
-![AxialAlignment](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintAxial.svg?sanitize=true).
+![AxialAlignment](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintAxial.svg?sanitize=true).
 that takes away four DOF, meaning that the second part can still rotate and
 move along the normal axis of the constraining plane. If you use
 a `AxialConstraint`, it will work, but you'll get some complaining message at
@@ -146,7 +146,7 @@ the status bar when recomputing saying "redundant constraints". The default
 constraint solver can handle some level of redundancy, but if left uncheck and
 you keeps adding more redundancy, the solver sometimes may fail with no obvious
 reason. The best solution is to use a two DOF constraint here, `PointOnLine`,
-![PointOnLine](../raw/master/Gui/Resources/icons/constraints/Assembly_PointOnLine.svg?sanitize=true),
+![PointOnLine](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_PointOnLine.svg?sanitize=true),
 which restricts only two positional parameter. We select the first circular edge
 in the axis part, which is used as the _point_ at its center. And the second
 element, the corner arc of the ring, will be used as the _line_, which is the

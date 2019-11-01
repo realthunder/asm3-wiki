@@ -3,24 +3,24 @@
 * Start FreeCAD, and create a new document
 * Switch to `Part` workbench, and create a `Cube` and a `Cylinder`
 * Switch to `Assembly3` workbench, click 
-  ![AddAssembly](../raw/master/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true) 
+  ![AddAssembly](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true) 
   to create a new assembly
 * Select both the `Cube` and `Cylinder`, and drag them into the new assembly
 * Select any face of the `Cylinder` or `Cube`, and click 
-  ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
+  ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
   activate part manual movement. Click any arrow to drag the `Cylinder` on top
   of the `Cube`
 * Select the top face of `Cube` and (while holding `CTRL` key) select the bottom
   face or edge of the `Cylinder`,  and then click
-  ![AddCoincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)
+  ![AddCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)
   to create a plane coincidence constraint.
 * Finally, click
-  ![Solve](../raw/master/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
+  ![Solve](../raw/master/freecad/asm3/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
   to solve the constraint system.
 
 [[images/simple.gif]]
 
-You can click ![Auto recompute](../raw/master/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true) 
+You can click ![Auto recompute](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true) 
 to enable auto-solving with any changes in constraint.
 
 After a new constraint is created, the selected elements will be highlighted in
@@ -31,7 +31,7 @@ changing the color of constraint object itself. Make sure you set the
 
 In case you find that the constraining element highlight obscure the assembly
 3D view, you can enable the _Auto Element Visibility_ feature by clicking
-![AutoElementVis](../raw/master/Gui/Resources/icons/Assembly_AutoElementVis.svg?sanitize=true).
+![AutoElementVis](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AutoElementVis.svg?sanitize=true).
 When enabled, all constraining elements will be hidden by default. You can
 reveal them by selecting any constraint or constraint element object in the
 tree view.
@@ -57,10 +57,10 @@ base part.
   four. Now you have four identical assemblies.
 * Create a new assembly, and then drag the link object into it.
 * Select any face of any `Cube`, click
-  ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true)
+  ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true)
   and drag to spread out the parts.
 * Select any face of the left most `Cube` in 3D view, and click
-  ![Lock](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
+  ![Lock](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
   to lock the left most sub assembly. 
 * Orient the parts whatever you like. Select two face from any two assembly,
   and create a plane coincidence constraint. If you've enabled _auto
@@ -124,14 +124,14 @@ tutorial for demonstration.
 
 Assembly3 has extensive support of manual movement of nested assembly. In 3D
 view, select any geometry element (Face, Edge) that belongs to some assembly,
-and click ![Move](../raw/master/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) 
+and click ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) 
 to activate part dragging. The dragger will be centered around the selected
 geometry element. In case of multi-hierarchy assemblies, you will be dragging
 the first level sub-assembly of the top-level assembly. If you want to drag
 intermediate sub-assembly instead, add that assembly as the second selection
 (`CTRL` select) before activating part move. 
 
-If you have enabled ![AutoRecompute](../raw/master/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true),
+If you have enabled ![AutoRecompute](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_AutoRecompute.svg?sanitize=true),
 any movement of the sub-assembly will cause the parent assembly to auto
 re-solve its constraints, as shown below. Because there are too many degree of
 freedom left, hence many possible solutions of the constraint system, the
@@ -153,7 +153,7 @@ a single self-contained document. FreeCAD core provides a convenient command to
 help with this otherwise not so trivial task. Simply right-click any item in
 the document you want to distribute, and select `Link actions -> Import all
 links`, and that's all. Click
-![Solve](../raw/master/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
+![Solve](../raw/master/freecad/asm3/Gui/Resources/icons/AssemblyWorkbench.svg?sanitize=true)
 to see if every thing is okay. You can of course selectively import any object
 you want. Simply right click that item and select `Link actions -> Import
 link`.

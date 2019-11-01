@@ -1,8 +1,8 @@
 __New Feature__
 
-* Support STEP import ![Import](../raw/master/Gui/Resources/icons/Assembly_Import.svg?sanitize=true),
+* Support STEP import ![Import](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Import.svg?sanitize=true),
   which imports STEP assembly into Assembly3 container(s). There is also another
-  import option ![ImportMulti](../raw/master/Gui/Resources/icons/Assembly_ImportMulti.svg?sanitize=true)
+  import option ![ImportMulti](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_ImportMulti.svg?sanitize=true)
   to import multiple-level assembly into separate documents in their own
   directories. More multiple-document import settings are available through the
   STEP import preference page
@@ -11,23 +11,23 @@ __New Feature__
 
   Check out demo [here](https://youtu.be/s4uZPmmaNCg)
 
-* Support adding plain group ![AddGroup](../raw/master/Gui/Resources/icons/Assembly_New_Group.svg?sanitize=true)
+* Support adding plain group ![AddGroup](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_New_Group.svg?sanitize=true)
   to further organizing assembly parts, elements and constraints. 
 
 * Introduce the new `Attachment` 
-  ![Attachment](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintAttachment.svg?sanitize=true)
+  ![Attachment](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintAttachment.svg?sanitize=true)
   constraint based on the discussion of `Assembly without solver` [thread].
   This constraint completely fixed the relationship between two (or more)
   involved parts. This constraint can be solved easily without relying on
   the expansive algebra solver, if and only if the constraint contains any part
   that is either explicitly fixed by a `Lock` constraint
-  ![Lock](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true),
+  ![Lock](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true),
   or indirectly fixed through a chain of other `Attachment` constraints. If the condition is
   not satisfied, the constraint will be treated like a `Coincidence` constraint
-  ![Coincidence](../raw/master/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true),
+  ![Coincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true),
   with locked angle and passed to the solved as usual.
 
-* Add button ![ShowCS](../raw/master/Gui/Resources/icons/Assembly_ShowElementCS.svg?sanitize=true)
+* Add button ![ShowCS](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_ShowElementCS.svg?sanitize=true)
   to toggle coordinate system visibility of an `Element`
 
 

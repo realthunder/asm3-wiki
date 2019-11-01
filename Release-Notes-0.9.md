@@ -1,16 +1,16 @@
 __New Feature__
 
-* Add ![QuickSolve](../raw/master/Gui/Resources/icons/Assembly_QuickSolve.svg?sanitize=true)
+* Add ![QuickSolve](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_QuickSolve.svg?sanitize=true)
   button for quick solve. A normal solve can report any redundant constraints,
   but can also be very slow because of that. A quick solve (which is also used
   when auto solve is enabled) is faster as it does not perform redundancy
   checking.
 
-* Add ![SmartRecompute](../raw/master/Gui/Resources/icons/Assembly_SmartRecompute.svg?sanitize=true)
+* Add ![SmartRecompute](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_SmartRecompute.svg?sanitize=true)
   option to reduce number of recomputation required.
 
 * Various changes to `Assembly` objects as listed below. See demo [here](https://youtu.be/uwPXDx-D4nY)
-    * Change _Add origin_ ![AddOrigin](../raw/master/Gui/Resources/icons/Assembly_Add_Origin.svg?sanitize=true)
+    * Change _Add origin_ ![AddOrigin](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Add_Origin.svg?sanitize=true)
       to a checkable action, such that when enabled, the origin features will be
       automatically added to any newly created assemblies.
 
@@ -32,10 +32,10 @@ __New Feature__
     * Add context menu in `Assembly` for freeze and unfreeze.
 
     * Introduce various measurement pseudo constraints,
-        * _Points distance_ ![PointsDistance](../raw/master/Gui/Resources/icons/constraints/Assembly_MeasurePointDistance.svg?sanitize=true)
-        * _Point plane distance_ ![PointPlane](../raw/master/Gui/Resources/icons/constraints/Assembly_MeasurePointPlaneDistance.svg?sanitize=true)
-        * _Poin line distance_ ![Angle](../raw/master/Gui/Resources/icons/constraints/Assembly_MeasurePointLineDistance.svg?sanitize=true)
-        * _Plane/Line angle_ ![Angle](../raw/master/Gui/Resources/icons/constraints/Assembly_MeasureAngle.svg?sanitize=true)
+        * _Points distance_ ![PointsDistance](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_MeasurePointDistance.svg?sanitize=true)
+        * _Point plane distance_ ![PointPlane](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_MeasurePointPlaneDistance.svg?sanitize=true)
+        * _Poin line distance_ ![Angle](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_MeasurePointLineDistance.svg?sanitize=true)
+        * _Plane/Line angle_ ![Angle](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_MeasureAngle.svg?sanitize=true)
 
 __FreeCAD LinkStage3__
 
