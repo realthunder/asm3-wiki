@@ -136,6 +136,25 @@ the difference between applying offset on `ElementLink` and `Element`.
 
 [[images/element-offset.gif]]
 
+<a name="element-actions"></a>Starting from version 0.11, there is a few new
+context menu actions to simplify manipulating element offset. Simply right
+click any `Element` or `ElementLink` item in the tree view to bring up the
+context menu, available actions are,
+
+* `Flip element`: Flip the Z normal of the element by rotation 180 degrees along
+  its X axis. If `CTRL` key is pressed while activate this action, it will rotate
+  along the element's Y axis. Note that `Flip element` is most effective when
+  used in `Attachment` constraint, because the constraint follows the element's
+  Z normal unambiguously. For other type of constraint, like `PlaneConcidence`
+  or `PlaneAlignment`, you may want to try the `Flip part` menu action, because
+  these types of constraint works the same regardless of the element Z normal
+  orientation, so flipping the element will have no effect.
+
+* `Offset element`, use the dragger (similar to `Mover` tool) to manipulate element
+  offset directly in the 3D view.
+
+* `Reset offset`, reset element to no offset.
+
 # Constraints with More Than Two Elements
 
 It is intuitive for one to select two geometry elements and create
