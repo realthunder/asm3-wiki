@@ -34,3 +34,6 @@ __FreeCAD LinkStage3__
 
 * Improve document recomputation efficiency by doing property comparison, i.e.
   skip unnecessary recomputation if property content is unchanged.
+
+* Add view option for auto transparency on all objects except those in editing.
+  Currently only applies to editing sketches.
