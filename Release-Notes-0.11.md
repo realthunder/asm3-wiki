@@ -37,3 +37,6 @@ __FreeCAD LinkStage3__
 
 * Add view option for auto transparency on all objects except those in editing.
   Currently only applies to editing sketches.
+
+* Allow saving document to directory without archive, for better support with
+  external version control software.
