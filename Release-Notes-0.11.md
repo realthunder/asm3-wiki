@@ -40,3 +40,9 @@ __FreeCAD LinkStage3__
 
 * Allow saving document to directory without archive, for better support with
   external version control software.
+
+* Refactor [Hidden Line](https://forum.freecadweb.org/viewtopic.php?p=393073#p394929)
+  draw style. Rename the old `Hidden Line` draw style to `Tessellation`.
+
+* Add new [Shadow](https://forum.freecadweb.org/viewtopic.php?f=10&t=9663&p=394930#p394930)
+  draw style.
