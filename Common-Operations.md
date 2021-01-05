@@ -1,17 +1,18 @@
 # Create a Simple Assembly with a Constraint
 
-* Start FreeCAD, and create a new document
-* Switch to `Part` workbench, and create a `Cube` and a `Cylinder`
-* Switch to `Assembly3` workbench, click 
+* Start FreeCAD and create a new document
+* Switch to the `Part` workbench and create a `Cube` and a `Cylinder`
+* Switch to the `Assembly3` workbench, click
   ![AddAssembly](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_New_Assembly.svg?sanitize=true) 
   to create a new assembly
-* Select both the `Cube` and `Cylinder`, and drag them into the new assembly
-* Select any face of the `Cylinder` or `Cube`, and click 
+* Select both the `Cube` and the `Cylinder` and drag them into the new assembly
+* Select any face of the `Cylinder` or `Cube`, and click
   ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true) to
   activate part manual movement. Click any arrow to drag the `Cylinder` on top
-  of the `Cube`
-* Select the top face of `Cube` and (while holding `CTRL` key) select the bottom
-  face or edge of the `Cylinder`,  and then click
+  of the `Cube`, press the `ESC` key to leave part movement (Alternative:
+  right-click `Assembly` in the tree view and click `Finish editing`)
+* Select the top face of the `Cube` and (while holding the `CTRL` key) select the bottom
+  face or edge of the `Cylinder` and then click
   ![AddCoincidence](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintCoincidence.svg?sanitize=true)
   to create a plane coincidence constraint.
 * Finally, click
@@ -58,10 +59,11 @@ base part.
 * Create a new assembly, and then drag the link object into it.
 * Select any face of any `Cube`, click
   ![Move](../raw/master/freecad/asm3/Gui/Resources/icons/Assembly_Move.svg?sanitize=true)
-  and drag to spread out the parts.
+  and click any arrow to drag to spread out the parts. Click the edges of the
+  movement sphere to turn the part. Press `Esc` to leave part movement.
 * Select any face of the left most `Cube` in 3D view, and click
   ![Lock](../raw/master/freecad/asm3/Gui/Resources/icons/constraints/Assembly_ConstraintLock.svg?sanitize=true)
-  to lock the left most sub assembly. 
+  to lock the left most sub assembly.
 * Orient the parts whatever you like. Select two face from any two assembly,
   and create a plane coincidence constraint. If you've enabled _auto
   recompute_, then the two assembly will now be snapped together
