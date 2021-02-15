@@ -58,7 +58,7 @@ functions are blocked,
 * `open()`
 * `input()`
 
-No Python module is allowed except the followings,
+No Python module is allowed except the following,
 
 * `builtins` (or `__builtin__` for Python 2)
 * `math`
@@ -225,7 +225,7 @@ parser,
 * The _global_ variable scope is defined as the variables defined in top level
   statement. And _local_ means the current
   executing function or `eval()`. The variable scope, or more specifically, the
-  evaluation stacks are isolated from the Python interpretor running inside
+  evaluation stacks are isolated from the Python interpreter running inside
   FreeCAD. The `global`, `local`, `nonlocal` and `del` statements are supported
   but with altered definition of scope described above.
 
@@ -385,7 +385,7 @@ as follows,
 
 * `identifier1#identifier2.identifier3`, this syntax is used to reference
   a property `identifier3` of an object with internal name `identifier2` that
-  belongs to an external document labelled `identifier1`. Unlike upstream,
+  belongs to an external document labeled `identifier1`. Unlike upstream,
   you have to save both the referencing and referenced documents at least
   once before using this type of reference, otherwise exception will be
   thrown. Whenever a document containing this type of reference is opened,
@@ -493,7 +493,7 @@ eval(cmd, ...)
 ```
 
 `cmd` can be a single string or a sequence of strings. You can pass in one or
-more optional input arguments as pre-defined variables before script evaluation.
+more optional input arguments as predefined variables before script evaluation.
 The argument supports positional and keyword argument, as well as sequence and
 dictionary unpacking. Positional argument is named as `_index_`, where `index`
 is the argument's position starting with one. For example, 
@@ -506,7 +506,7 @@ d = { 'g':4 }
 # calling eval with the following arguments
 eval(cmd, 5, 6, a=[1,2,3], *c, **d)
 
-# is equivalant to pre-defining the following variable
+# is equivalent to pre-defining the following variable
 _1_ = 5
 _2_ = 6
 a = [1,2,3]
@@ -555,7 +555,7 @@ both ways. Unlike normal one-way expression binding, where it only reads value
 from the bound property, `dbind()` allows you write to the bound property as
 well. In other word, it lets you link properties from many different objects,
 and put them in the same place (which can be any type of object, not limited to
-a Spreasheet) for easy configuration. At the same time, you can still edit the
+a Spreadsheet) for easy configuration. At the same time, you can still edit the
 property in the original object, and the changes will be reflected on the other
 side. Like `href()`, the property reference is hidden from dependency checking.
 
