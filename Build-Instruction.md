@@ -150,7 +150,7 @@ very importantly, make sure you name the clone directory as __asm3__. After that
 checkout `slvs` sub-module, and all of its own sub-modules.
 
 ```
-cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
+cd ~/some/place/FreeCAD.app/Contents/Ext/freecad/asm3
 git submodule update --init slvs
 cd slvs
 git submodule update --init --recursive
@@ -176,7 +176,7 @@ After done, create a directory named `py_slvs_mac` under `asm3`, and copy out
 the results
 
 ```
-cd ~/some/place/FreeCAD.app/Conntents/Ext/freecad/asm3
+cd ~/some/place/FreeCAD.app/Contents/Ext/freecad/asm3
 mkdir py_slvs_mac
 touch py_slvs_mac/__init__.py
 cp slvs/build/src/swig/python/_slvs.so py_slvs_mac/
