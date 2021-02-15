@@ -373,6 +373,13 @@ as follows,
   modified, say, refined, and `Edge10` is shifted to `Edge9`, then the
   expression will be auto updated accordingly, too.
 
+  Note that the expression completer tries to auto correct some common mistakes
+  in `subname` reference and will try label interpretation if the named object
+  cannot be found, which unfortunately creates some ambiguity of `subname`
+  reference that contains only geometry element reference, such as
+  `Box.<<Face1>>._shape`. To resolve this ambiguity, you should always proceed
+  a geometry element reference with a `.`, i.e. `Box.<<.Face1>>._Shape`
+
 * `<<label>>.<<subname>>.identifier`, same as above, except that the parent
   object is referenced by its label.
 
