@@ -1,7 +1,7 @@
 # Coordinate System
 
 The user is encouraged to first read 
-[this tutorial](https://www.freecadweb.org/wiki/Assembly_Basic_Tutorial) to get some
+[this tutorial](https://web.archive.org/web/20191130140733/https://www.freecadweb.org/wiki/Assembly_Basic_Tutorial) to get some
 idea about the new concept of _local coordinate systems_. The tutorial is for
 the original unfinished Assembly workbench, but gives a pretty comprehensive
 overview of what Assembly3 is providing as well. The `Part` or `Product`
