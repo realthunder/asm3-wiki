@@ -25,7 +25,7 @@ obj.setPropertyStatus(property_name, "-Immutable")
 # add multiple status bit
 obj.setPropertyStatus(property_name, ["Immutable", "Hidden"])
 
-# get property status of some proeprty
+# get property status of some property
 obj.getPropertyStatus(property_name)
 
 # get a list of available property status name
@@ -76,7 +76,7 @@ intended to trigger property before change event only at the time of change.
 
 Class `PropertyLists`, and most of its derived classed has been refactored for
 more code reuse. The original motivation is to add a `TouchList` function, 
-which allows the programmer to discover exactly which entry/entires has been
+which allows the programmer to discover exactly which entry/entries has been
 changed to save potentially expensive operations. 
 
 A new class, `PropertyListsBase`, is added as an abstract parent class that is

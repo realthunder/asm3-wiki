@@ -122,7 +122,7 @@ can still open the document, and every links inside works as expected.
 a new mapped name, so that when restoring in the new FreeCAD, it stays the same.
 The old version FreeCAD will simply skip it.
 
-You may be wandering why can't we just hide the whole mapped element reference
+You may be wondering why can't we just hide the whole mapped element reference
 name behind the scene, and only assign the original element name to
 `PropertyLinkSub`, and let the core works its magic to keep it up-to-date. 
 There are cases where you'll prefer a constant reference name. For example,

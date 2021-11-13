@@ -95,8 +95,8 @@ def makESHAPE(result_shape, mapper, input_shapes, opcode):
                 continue
 
             # name type tells us if this name is for a modified (='M') or
-            # generated (='G') shape. Although it shouldn't happend, but we are
-            # prepared to accpet a shape that is both generated and modified
+            # generated (='G') shape. Although it shouldn't happen, but we are
+            # prepared to accept a shape that is both generated and modified
             # (='MG')
             if (name_type=='M' and index<0) or \
                (name_type=='G' and index>0):
@@ -129,7 +129,7 @@ def makESHAPE(result_shape, mapper, input_shapes, opcode):
         #
         #    Edge2;:G1(2_Edge3:2,3_Edge4:2);XTR;:T1:4:F
         #
-        # Marker ; is used as seperator for different components of the name.
+        # Marker ; is used as separator for different components of the name.
         # Special marker ;: is reserved by TopoShape to mark any internal used
         # components, to distinguish with user supplied op code.
         #
@@ -151,8 +151,8 @@ def makESHAPE(result_shape, mapper, input_shapes, opcode):
 
 
     # Now, the reverse pass. Starting from the highest level element, i.e.
-    # Face, for any element that are named, assign names for its lower unamed
-    # elements. For example, if Edge1 is named E1, and its vertexes are not
+    # Face, for any element that are named, assign names for its lower unnamed
+    # elements. For example, if Edge1 is named E1, and its vertices are not
     # named, then name them as E1;:U1, E1;:U2, etc.
     #
     # In order to make the name as stable as possible, we may assign multiple
@@ -230,7 +230,7 @@ def makESHAPE(result_shape, mapper, input_shapes, opcode):
             if not names:
                 continue
 
-            # Construct the element name. For exmaple, if opcode is XTR, and a
+            # Construct the element name. For example, if opcode is XTR, and a
             # face with edges Edge1, Edge2, Edge3 will be named as
             # Edge1;:L(Edge2,Edge3);XTR
 
@@ -435,9 +435,9 @@ Face2;:M2;FUS;:T2:5:F;:M(Face6;:M(Face2;:T2:5:F);FUS;:T1:5:F,Face6;:M2;FUS;:T1:5
 |                   |   |                                                         |
 |                   |   -----------------------------------------------------------
 ---------------------                                |
-         |                                           -- second segement
+         |                                           -- second segment
          |
-         -- first segement, i.e. the name of the first source element
+         -- first segment, i.e. the name of the first source element
 ```
 
 The final hashed name is,

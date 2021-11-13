@@ -142,7 +142,7 @@ property name provided by the object. `configLinkProperty()` accepts multiple
 properties. If `val` is omitted, then the property name is assumed to be the
 same as `key`. Python code can also call `getLinkExtProperty(name)` function to
 obtain the value of a configured property, where `name` is the predefined `key`
-name of the property. Each property supplied must be of a pre-defined type,
+name of the property. Each property supplied must be of a predefined type,
 or its derived type. Currently supported properties are,
 
 | Key name | Property type | Description |
@@ -159,9 +159,9 @@ or its derived type. Currently supported properties are,
 | VisibilityList | App::PropertyBoolList | The visibility state of each link element in array or group mode |
 | ElementCount | App::PropertyInteger | Link element count. Set to non-zero to activate array mode |
 | ElementList | App::PropertyLinkList | The property for holding child object list in array or group mode |
-| ShowElement | App::PropertyBool | Set to true to show element as objects, and false to collpase the array and claim the linked object a the single child. |
+| ShowElement | App::PropertyBool | Set to true to show element as objects, and false to collapse the array and claim the linked object a the single child. |
 | LinkMode | App::PropertyEnumeration | Link group mode, `AutoDelete`: auto delete the child object when removed. `AutoLink`: auto create a link for the dropped object. `AutoUnlink`: like `AutoLink` and also auto delete it when removed. |
-| ColoredElements | App::PropertyLinkSubHidden | The property for holding color overridding elements |
+| ColoredElements | App::PropertyLinkSubHidden | The property for holding color overriding elements |
 
 `App::Link` and `App::LinkGroup` are implemented by supplying a different set
 of properties to activate relevant behaviors in `App::LinkBaseExtension`. There
@@ -244,7 +244,7 @@ class ViewProviderMyLink(object):
 def makeMyLink(obj):
     'make a link to the given object'
 
-    # addObject() API is extended to accpet extra parameters in order to 
+    # addObject() API is extended to accept extra parameters in order to 
     # let the python object override the type of C++ view provider
     link = obj.Document.addObject("App::FeaturePython",'link',MyLink(),None,True)
 
@@ -269,7 +269,7 @@ box.ViewObject.ShapeColor = (0.8,0.8,0.8)
 # create the link object
 link = makeMyLink(box)
 
-# Set element count to switch to collpased link array.
+# Set element count to switch to collapsed link array.
 # If you want to see the element as object, set ShowElement=True
 link.ElementCount=4
 
