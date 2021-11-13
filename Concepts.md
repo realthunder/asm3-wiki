@@ -58,7 +58,7 @@ different places, with optional scale/mirror and material override. The core
 provides an extension, `App::LinkBaseExtension`, as a flexible way to help
 users extend their own object into a link type object. The extension utilize
 a so called _property design pattern_, meaning that the extension itself does
-not define any property, but has a bunch of pre-defined property place holders.
+not define any property, but has a bunch of predefined property place holders.
 The extension activates part of its function depending on what properties are
 defined in the object. This design pattern allows the object to choose their
 own property names and types. 
