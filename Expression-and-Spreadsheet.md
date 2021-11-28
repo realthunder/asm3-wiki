@@ -651,9 +651,9 @@ enter, it shows a ComboBox widget populated with the first item's string keys
 if it's a mapping, or simply the first item if it's a string list.
 When the user choose an item, the second item will be assigned the selected
 string. If there is a third callable item in the cell expression, it will be
-invoked on value change with arguments `callable(cell_address, seq)`, where
-`cell_address` is the current cell address in text form, and `seq` is the
-cell's evaluated list or tuple object.
+invoked on value change with arguments `callable(sheet, cell_address, seq)`,
+where `sheet` is the spreadsheet, `cell_address` is the current cell address in
+text form, and `seq` is the cell's evaluated list or tuple object.
 
 ## Label Edit Mode
 
