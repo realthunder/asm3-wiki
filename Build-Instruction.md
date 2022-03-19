@@ -1,9 +1,14 @@
-At the moment of this writing, Assembly3 only works with a forked FreeCAD
+**NOTE: The build instruction in this article is outdated. Assembly3 now works
+with official FreeCAD version 0.19 onwards. In addition, you can now install
+SolveSpave solver backend through `pip install py-slvs`**. The Python wheel
+repository can be found [here](https://github.com/realthunder/slvs_py/).
+
+~~At the moment of this writing, Assembly3 only works with a forked FreeCAD
 [branch](https://github.com/realthunder/FreeCAD/tree/LinkStage3). You need to
 first checkout this branch and [build](https://github.com/realthunder/FreeCAD/tree/LinkStage3#compiling)
-it yourself.
+it yourself.~~
 
-After that, checkout this repository directly inside the `Ext/freecad/`
+~~After that, checkout this repository directly inside the `Ext/freecad/`
 directory of your FreeCAD installation or build directory. Be sure to name the
 directory as **asm3**. The Assembly3 workbench supports multiple constraint
 solver backends. Currently, there are two backends available, `SolveSpace` and
@@ -12,7 +17,7 @@ to get SolveSpace backend fully working first, with SymPy + SciPy serving as
 a reference implementation for future exploration. All backends are optional.
 But, you'll need at least one installed to be able to do constraint based
 assembling, unless you are fine with manually movement, which is actually
-doable because Assembly3 provides a powerful mouse dragger.
+doable because Assembly3 provides a powerful mouse dragger.~~
 
 # SolveSpace
 
@@ -27,53 +32,29 @@ opportunity to bring the best from both worlds.
 
 There is no official python binding of SolveSpace at the moment. Besides, some
 small modification is required to bring out the SolveSpace assembly
-functionality into the solver library. You can find my fork at `asm3/slvs`
-subdirectory. To checkout, 
+functionality into the solver library. You can find my fork [here](https://github.com/realthunder/solvespace).
+Check out the repository to your local file system,
 
 ```
-cd asm3
-git submodule update --init slvs
-```
-
-If you are using Ubuntu 16.04 or Windows 64-bit, then you can check out the
-pre-built python binding at `asm3/py_slvs` subdirectory.
-
-```
-cd asm3
-git submodule update --init py_slvs
+git clone https://github.com/realthunder/solvespace
+cd solvespace
 ```
 
 ## Build for Ubuntu
 
-To build for Ubuntu, run
-
-```
-apt-get install libpng12-dev libjson-c-dev libfreetype6-dev \
-                libfontconfig1-dev libgtkmm-2.4-dev libpangomm-1.4-dev \
-                libgl-dev libglu-dev libglew-dev libspnav-dev cmake
-```
-
-Make sure to checkout one of the necessary sub module before building.
-
-```
-cd asm3/slvs
-git submodule update --init extlib/libdxfrw 
-```
-
 To build the python binding only
 
 ```
-cd asm3/slvs
 mkdir build
 cd build
-cmake -DBUILD_PYTHON=1 ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=On ..
 make _slvs
 ```
 
 After compilation is done, copy `slvs.py` and `_slvs.so` from
-`asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite
-existing files if you've checked out the `py_slvs` sub module. If not, then be
-sure to create an empty file named `__init__.py` at `asm3/py_slvs`.
+`build/src/swig/python/` to `asm3/py_slvs`, where `asm3` is the
+directory you install Assembly3 workbench. Be sure to create an empty file
+named `__init__.py` at `asm3/py_slvs`.
 
 ## Cross Compile for Windows
 
@@ -82,17 +63,15 @@ cross compile for Windows on Ubuntu
 
 ```
 apt-get install cmake mingw-w64
-cd asm3/slvs
-git submodule update --init --recursive
 mkdir build_mingw
 cd build_mingw
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=1 -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=On -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw64.cmake ..
 make _slvs
 ```
 After finish, copy `slvs.py` and `_slvs.pyd` from
-`asm3/slvs/build/src/swig/python/` to `asm3/py_slvs`. Overwrite
-existing files if you've checked out the `py_slvs` sub module. If not, then be
-sure to create an empty file named `__init__.py` at `asm3/py_slvs`.
+`build/src/swig/python/` to `asm3/py_slvs`, where `asm3` is the
+directory you install Assembly3 workbench. Be sure to create an empty file
+named `__init__.py` at `asm3/py_slvs`.
 
 ## Build on Windows
 
