@@ -51,6 +51,13 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=On ..
 make _slvs
 ```
 
+If you have more than one version of Python installed, you may want to specify
+the desired version as follow
+
+```
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=On -DPYTHON_EXECUTABLE=/usr/bin/python3 ..
+```
+
 After compilation is done, copy `slvs.py` and `_slvs.so` from
 `build/src/swig/python/` to `asm3/py_slvs`, where `asm3` is the
 directory you install Assembly3 workbench. Be sure to create an empty file
