@@ -1,3 +1,12 @@
+##### Table of Contents
+- [Overview](#overview)
+- [Algorithm](#algorithm)
+- [Test Example](#test-example)
+- [Hashing Element Name](#hashing-element-name)
+- [Tracing Model History](#tracing-model-history)
+- [Element Coloring](#element-coloring)
+- [Overhead](#overhead)
+
 # Overview
 
 This article details the actual algorithm of generating the topological names

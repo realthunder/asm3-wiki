@@ -1,12 +1,15 @@
-Starting from version 0.3, support of stable topological naming of geometry
-element has been added to my FreeCAD Link branch. Because Assembly3 is the main
-test environment, the document is put here.
-
-Update: Version 0.4 now has full support of element mapping in all features
-from the `Part` workbench. In addition, element mapping is fully supported in 
-Python. Most python features automatically gain the benefit of element mapping
-without any code modification.
-
+##### Table of Contents
+- [Overview](#overview)
+- [The Framework](#the-framework)
+  * [GeoFeature](#geofeature)
+  * [Property Link](#property-link)
+  * [GUI Selection](#gui-selection)
+- [Topological Name Generation](#topological-name-generation)
+  * [Object Identification](#object-identification)
+  * [Element Mapping](#element-mapping)
+  * [New Makers in `TopoShape`](#new-makers-in--toposhape-)
+  * [String Hasher](#string-hasher)
+  * [Element Map Versioning](#element-map-versioning)
 
 # Overview
 
